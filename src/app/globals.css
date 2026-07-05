@@ -888,3 +888,83 @@ button, input, select { font: inherit; }
 @media (max-width: 720px) {
   .skin-grid, .battle-grid, .admin-grid, .stat-grid { grid-template-columns: 1fr; }
 }
+
+/* CaseBoom v13 Admin Editor */
+.editor-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 18px;
+}
+
+.editor-card {
+  border-radius: 24px;
+  border: 1px solid rgba(255,255,255,.09);
+  background: linear-gradient(180deg, rgba(18,24,38,.95), rgba(8,11,18,.98));
+  padding: 18px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 12px;
+}
+
+.chance-bar {
+  height: 12px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(255,255,255,.08);
+}
+
+.chance-bar span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #62ff9b, #ffd45a, #ff4d6d);
+}
+
+.status-pill {
+  display: inline-flex;
+  min-height: 26px;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0 10px;
+  font-size: 11px;
+  font-weight: 1000;
+  background: rgba(255,212,90,.12);
+  color: #ffd45a;
+  border: 1px solid rgba(255,212,90,.22);
+}
+
+.switch-list {
+  display: grid;
+  gap: 10px;
+}
+
+.switch-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 16px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.07);
+}
+
+.drop-zone {
+  min-height: 160px;
+  border-radius: 22px;
+  border: 1px dashed rgba(255,212,90,.32);
+  background: rgba(255,212,90,.06);
+  display: grid;
+  place-items: center;
+  text-align: center;
+  color: rgba(255,255,255,.60);
+  padding: 18px;
+}
+
+@media (max-width: 1100px) {
+  .editor-grid { grid-template-columns: 1fr; }
+  .form-grid { grid-template-columns: 1fr; }
+}

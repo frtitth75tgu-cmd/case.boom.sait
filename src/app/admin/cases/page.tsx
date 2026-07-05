@@ -1,64 +1,55 @@
-export const dynamic = "force-dynamic";
-
-import { requireAdmin } from "@/lib/authGuards";
+import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { config } from "@/lib/config";
 
 export default async function AdminCasesPage() {
-  await requireAdmin();
-  const cases = await prisma.case.findMany({ include: { items: true }, orderBy: { createdAt: "desc" } });
+  const cases = await prisma.caseDraft.findMany({ orderBy: { createdAt: "desc" }, take: 100 }).catch(() => []);
 
   return (
-    <main className="mx-auto max-w-7xl px-4 py-10">
-      <h1 className="text-4xl font-black">Кейсы</h1>
+    <main className="page">
+      <section className="panel" style={{ padding: 28 }}>
+        <p style={{ color: "#ffd45a", fontWeight: 900 }}>Case Manager</p>
+        <h1 style={{ fontSize: 44, margin: "6px 0 0", fontWeight: 1000 }}>Редактор кейсов</h1>
+        <p style={{ color: "rgba(255,255,255,.58)" }}>Создавай кейсы, открывай редактор, добавляй предметы и проверяй шансы.</p>
+      </section>
 
-      <section className="card mt-6 p-6">
-        <h2 className="text-2xl font-black">Создать кейс</h2>
-        <form action="/api/admin/cases/create" method="post" className="mt-5 grid gap-4 md:grid-cols-2">
-          <input className="input" name="title" placeholder="Название" required />
-          <input className="input" name="slug" placeholder="slug" required />
-          <input className="input" name="price" placeholder="Цена" type="number" min="1" required />
-          <input className="input" name="image" placeholder="/cases/starter.svg" defaultValue="/cases/starter.svg" />
-          <textarea className="input md:col-span-2" name="description" placeholder="Описание" required />
-          <button className="btn md:col-span-2">Создать</button>
+      <section className="editor-card" style={{ marginTop: 18 }}>
+        <h2 style={{ marginTop: 0 }}>Быстро создать кейс</h2>
+        <form action="/api/admin/cases/create" method="post" className="form-grid">
+          <input className="input" name="title" placeholder="Название: Diamond Vault" required />
+          <input className="input" name="slug" placeholder="slug: diamond-vault" required />
+          <select className="input" name="category" defaultValue="standard">
+            <option value="standard">Обычный</option>
+            <option value="free">Бесплатный</option>
+            <option value="deposit">За депозит</option>
+            <option value="weapon">Оружейный</option>
+            <option value="knife">Ножи</option>
+            <option value="gloves">Перчатки</option>
+            <option value="vip">VIP</option>
+          </select>
+          <input className="input" name="price" type="number" placeholder="Цена BC" required />
+          <button className="btn">Создать кейс</button>
         </form>
       </section>
 
-      <div className="mt-8 space-y-5">
-        {cases.map((c) => (
-          <div key={c.id} className="card p-6">
-            <div className="flex flex-wrap items-center justify-between gap-3">
+      <section className="case-section">
+        <div className="section-head"><h2>Список кейсов</h2></div>
+        <div className="case-row-grid">
+          {cases.length ? cases.map((c) => (
+            <Link key={c.id} href={`/admin/cases/${c.id}/editor`} className="case-card case-wide">
               <div>
-                <h2 className="text-2xl font-black">{c.title}</h2>
-                <p className="text-white/50">{c.slug} · {c.price} ₽ · {c.isActive ? "активен" : "скрыт"}</p>
+                <span className="status-pill">{c.category}</span>
+                <h3 style={{ fontSize: 24 }}>{c.title}</h3>
+                <p style={{ color: "rgba(255,255,255,.55)" }}>Цена: {c.price} {config.boomCoinShort}</p>
+                <p style={{ color: c.isActive ? "#62ff9b" : "#ff4d6d", fontWeight: 900 }}>{c.isActive ? "Активен" : "Выключен"}</p>
               </div>
-              <form action="/api/admin/cases/toggle" method="post">
-                <input type="hidden" name="caseId" value={c.id} />
-                <button className="btn btn-outline">{c.isActive ? "Скрыть" : "Активировать"}</button>
-              </form>
-            </div>
-
-            <form action="/api/admin/cases/items/create" method="post" className="mt-5 grid gap-3 md:grid-cols-5">
-              <input type="hidden" name="caseId" value={c.id} />
-              <input className="input" name="name" placeholder="Предмет" required />
-              <select className="input" name="rarity">
-                <option>COMMON</option><option>UNCOMMON</option><option>RARE</option><option>EPIC</option><option>MYTHIC</option><option>LEGENDARY</option>
-              </select>
-              <input className="input" name="price" type="number" placeholder="Цена" required />
-              <input className="input" name="chanceBps" type="number" placeholder="Шанс bps 1-10000" required />
-              <button className="btn">Добавить</button>
-            </form>
-
-            <div className="mt-4 grid gap-3 md:grid-cols-3">
-              {c.items.map((i) => (
-                <div key={i.id} className="rounded-2xl bg-bg p-4">
-                  <strong>{i.name}</strong>
-                  <div className="text-sm text-white/50">{i.rarity} · {i.price} ₽ · {(i.chanceBps / 100).toFixed(2)}%</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
+              <div className="case-wide-art"><div className="case-box" /></div>
+            </Link>
+          )) : (
+            <div className="panel" style={{ padding: 22, color: "rgba(255,255,255,.55)" }}>Кейсов пока нет. Создай первый кейс выше.</div>
+          )}
+        </div>
+      </section>
     </main>
   );
 }
