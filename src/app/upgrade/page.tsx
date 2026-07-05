@@ -1,43 +1,36 @@
-import { config } from "@/lib/config";
-import { SkinCard } from "@/components/SkinCard";
-
-const left = ["AK-47 | Redline", "Restricted", 850] as const;
-const right = ["AWP | Asiimov", "Covert", 4300] as const;
+import Link from "next/link";
+import { UpgradeChanceSelector } from "@/components/UpgradeChanceSelector";
+import { skins } from "@/data/cs2Catalog";
+import { SkinCard } from "@/components/Cs2Visuals";
 
 export default function UpgradePage() {
+  const source = skins.find((s) => s.name === "AK-47 | Redline") || skins[0];
+  const targets = skins.filter((s) => s.price > source.price).slice(0, 8);
+
   return (
     <main className="page">
       <section className="panel" style={{ padding: 28 }}>
-        <p style={{ color: "#ffd45a", fontWeight: 900 }}>Upgrade</p>
-        <h1 style={{ fontSize: 46, margin: "6px 0 0", fontWeight: 1000 }}>Апгрейд предметов</h1>
+        <p style={{ color: "#ffd45a", fontWeight: 1000 }}>Upgrade Ultimate</p>
+        <h1 style={{ fontSize: 46, margin: "6px 0 0", fontWeight: 1000 }}>Апгрейд с выбором процента</h1>
         <p style={{ color: "rgba(255,255,255,.58)", maxWidth: 760 }}>
-          Новый дизайн апгрейда с обычной анимацией и Fast Mode для быстрой прокрутки.
+          Пользователь выбирает шанс сам: низкий процент — можно поставить более дорогую цель, высокий процент — безопаснее, но цель дешевле.
         </p>
       </section>
 
-      <section className="panel" style={{ padding: 24, marginTop: 18 }}>
-        <div className="upgrade-arena">
-          <SkinCard name={left[0]} rarity={left[1]} price={left[2]} />
-          <div>
-            <div className="upgrade-orb"><span>19.76%</span></div>
-            <div style={{ display: "flex", gap: 10, justifyContent: "center", marginTop: 16 }}>
-              <button className="btn">Апгрейд</button>
-              <button className="btn secondary">⚡ Fast Mode</button>
-            </div>
-          </div>
-          <SkinCard name={right[0]} rarity={right[1]} price={right[2]} />
-        </div>
+      <section style={{ marginTop: 18 }}>
+        <UpgradeChanceSelector />
       </section>
 
       <section className="case-section">
-        <div className="section-head"><h2>История апгрейдов</h2></div>
-        <div className="panel" style={{ padding: 14 }}>
-          {["Успех · AWP | Asiimov", "Неудача · M4A1-S | Printstream", "Успех · AK-47 | Vulcan"].map((x, i) => (
-            <div className="battle-row" key={x}>
-              <div className="avatar">{i + 1}</div>
-              <div style={{ gridColumn: "span 2", fontWeight: 900 }}>{x}</div>
-            </div>
-          ))}
+        <div className="section-head">
+          <div>
+            <h2>Выбор цели</h2>
+            <p style={{ margin: "5px 0 0", color: "rgba(255,255,255,.50)", fontSize: 13 }}>Примеры предметов, на которые можно апгрейдиться</p>
+          </div>
+          <Link href="/skins" style={{ color: "#ffd45a", fontWeight: 900 }}>Каталог →</Link>
+        </div>
+        <div className="skin-grid">
+          {targets.map((item) => <SkinCard key={item.name} item={item} />)}
         </div>
       </section>
     </main>
