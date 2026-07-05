@@ -292,3 +292,28 @@ model BattleParticipant {
   status    String   @default("JOINED")
   createdAt DateTime @default(now())
 }
+
+
+model SkinClaim {
+  id              String   @id @default(cuid())
+  userId          String
+  inventoryItemId String?
+  originalName    String
+  originalPrice   Int
+  selectedName    String?
+  selectedPrice   Int?
+  refundCoins     Int      @default(0)
+  status          String   @default("PENDING")
+  tradeUrl        String?
+  payload         Json?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model EconomySetting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
