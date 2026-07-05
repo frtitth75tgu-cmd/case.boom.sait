@@ -2,149 +2,165 @@ import Link from "next/link";
 import { config } from "@/lib/config";
 import { CaseSection, CaseVisual, showcaseCases } from "@/components/CaseShowcase";
 
-const popular = showcaseCases.slice(3, 10);
-const free = showcaseCases.filter((c) => c.tag === "FREE" || c.tag === "DEPOSIT").concat([
-  { name: "Silver Deposit", price: 0, tag: "DEPOSIT", a: "#c9d3e6", b: "#283140" },
-  { name: "Gold Deposit", price: 0, tag: "DEPOSIT", a: "#ffd45a", b: "#6d4308" },
-  { name: "Daily Bonus Case", price: 0, tag: "FREE", a: "#62ff9b", b: "#0d3f24" },
-]);
-const premium = showcaseCases.filter((c) => c.price >= 999 && c.price < 50000);
-const expensive = showcaseCases.filter((c) => c.price >= 50000);
-const weapons = [
-  { name: "AWP Collection", price: 899, tag: "AWP", a: "#62e6ff", b: "#14385f" },
-  { name: "AK-47 Collection", price: 799, tag: "AK", a: "#ff8a2a", b: "#481509" },
-  { name: "M4 Collection", price: 699, tag: "M4", a: "#4aa3ff", b: "#0b2c5d" },
-  { name: "Pistol Pack", price: 199, tag: "LOW", a: "#32ff62", b: "#075c28" },
-  { name: "Knife Hunter", price: 4999, tag: "KNIFE", a: "#ffe176", b: "#624109" },
-  { name: "Glove Vault", price: 6999, tag: "GLOVES", a: "#ff7a2a", b: "#5e240e" },
-];
+function MiniSkin({ name, price }: { name: string; price: string }) {
+  return (
+    <div className="skin-card">
+      <div className="skin-image"><div style={{fontSize:32}}>🔫</div></div>
+      <div className="skin-name">{name}</div>
+      <div className="skin-price">{price} {config.boomCoinShort}</div>
+    </div>
+  );
+}
 
-const drops = [
-  ["Timon", "Diamond Vault", "AWP | Dragon Lore", "125 000"],
-  ["Danya", "Titan Case", "M4A4 | Howl", "58 750"],
-  ["kostya", "Legacy Vault", "★ Karambit | Lore", "103 250"],
-  ["Fenya", "Inferno Case", "AK-47 | Fire Serpent", "27 350"],
-  ["Boomer", "Emperor Vault", "★ Sport Gloves", "89 600"],
-];
-
-const categories = [
-  ["🎁", "Бесплатные", "Daily и бонусные", "#62ff9b", "#0d3f24"],
-  ["💎", "За депозит", "Награды за пополнение", "#4aa3ff", "#0b2c5d"],
-  ["🔪", "Ножи", "Кейсы с knife-дропом", "#ffd45a", "#6d4308"],
-  ["🧤", "Перчатки", "Gloves-серия", "#ff7a2a", "#5e240e"],
-  ["🔥", "Популярные", "Самые открываемые", "#ff4d6d", "#521525"],
-  ["👑", "Дорогие", "50k / 100k / 150k", "#ff40df", "#51215e"],
+const minis = [
+  ["AK-47 | Neon Rider", "2 450", "#ff4d6d"],
+  ["AWP | Dragon Lore", "115 000", "#ffd45a"],
+  ["M4A4 | Howl", "85 000", "#ff8a2a"],
+  ["Karambit | Fade", "145 000", "#ff4de3"],
+  ["Butterfly | Doppler", "128 000", "#8b5cf6"],
+  ["USP-S | Kill Confirmed", "9 000", "#ff4d6d"],
+  ["Glock-18 | Gamma", "2 700", "#62ff9b"],
+  ["M4A1-S | Printstream", "14 500", "#e9eefc"],
+  ["AK-47 | Asiimov", "18 500", "#ff8a2a"],
+  ["AWP | Medusa", "35 000", "#62e6ff"],
+  ["Sport Gloves | Pandora", "98 000", "#8b5cf6"],
 ];
 
 export default function HomePage() {
+  const popular = showcaseCases.slice(3, 10);
+  const vip = showcaseCases.filter((c) => c.price >= 50000);
+  const bonus = showcaseCases.filter((c) => c.price === 0).concat([
+    { name: "Deposit Gold", price: 0, tag: "DEPOSIT", a: "#ffd45a", b: "#6d4308" },
+    { name: "Daily Farm", price: 0, tag: "FREE", a: "#62ff9b", b: "#0d3f24" },
+  ]);
+
   return (
-    <main className="page">
-      <section className="hero-grid">
-        <div>
-          <div className="hero">
-            <div className="hero-weapon" />
-            <div className="hero-knife" />
-            <h1>
-              Кейсы не в куче<br />
-              <span>а по разделам</span><br />
-              как на сервисе
-            </h1>
-            <p>
-              CaseBoom — витрина кейсов по категориям: бесплатные, за депозит, популярные, оружейные, ножи, перчатки и VIP.
-            </p>
-            <div style={{ display: "flex", gap: 12, marginTop: 28, position: "relative", zIndex: 2 }}>
-              <Link href="/cases" className="btn">Смотреть кейсы</Link>
-              <Link href="/deposit-skins" className="btn secondary">Пополнить скинами</Link>
-            </div>
+    <main>
+      <section className="market-strip">
+        {minis.map(([name, price, color]) => (
+          <div key={name} className="market-mini" style={{ ["--mini" as any]: color }}>
+            <div className="gun" />
+            <strong>{name}</strong>
+            <span>{price} {config.boomCoinShort}</span>
           </div>
+        ))}
+      </section>
 
-          <div className="toolbar panel" style={{ padding: 12 }}>
-            <input className="input" placeholder="🔍 Найти кейс, предмет или категорию..." />
-            <button className="filter-btn">Все</button>
-            <button className="filter-btn">Ножи</button>
-            <button className="filter-btn">Перчатки</button>
-            <button className="filter-btn">VIP</button>
-          </div>
-
-          <section className="case-section">
-            <div className="section-head"><h2>Категории</h2></div>
-            <div className="category-grid">
-              {categories.map(([icon, title, text, a, b]) => (
-                <Link href="/cases" className="category-card" key={title} style={{ ["--cat-a" as any]: a, ["--cat-b" as any]: b, ["--cat-glow" as any]: a + "66" }}>
-                  <div className="icon">{icon}</div>
-                  <h3>{title}</h3>
-                  <p>{text}</p>
-                </Link>
-              ))}
-            </div>
-          </section>
-
-          <section className="case-section">
-            <div className="section-head">
-              <div>
-                <h2>Главные кейсы</h2>
-                <p style={{ margin: "5px 0 0", color: "rgba(255,255,255,.50)", fontSize: 13 }}>Крупные карточки для главной витрины</p>
+      <div className="page">
+        <section className="final-grid">
+          <div>
+            <div className="final-hero">
+              <div className="dragon">🐉</div>
+              <h1 className="final-title">Новый кейс<br /><span>Dragon</span></h1>
+              <p>Финальный стиль CaseBoom: кейсы, рулетка, апгрейд, сражения, бонусы, инвентарь и админ-панель.</p>
+              <div style={{display:"flex",gap:12,marginTop:24,position:"relative",zIndex:3}}>
+                <Link href="/cases/dragon-case" className="btn">Открыть кейс</Link>
+                <Link href="/cases" className="btn secondary">Все кейсы</Link>
               </div>
             </div>
-            <div className="case-row-grid">
-              {expensive.map((item) => <CaseVisual key={item.name} item={item} wide />)}
+
+            <section className="case-section">
+              <div className="section-head"><h2>Лучшие кейсы</h2><Link href="/cases" style={{color:"#ffd45a",fontWeight:900}}>Все →</Link></div>
+              <div className="case-strip">{popular.map((item) => <CaseVisual key={item.name} item={item} />)}</div>
+            </section>
+          </div>
+
+          <aside className="right-stack">
+            <div className="roulette-panel">
+              <div className="panel-title"><span>Рулетка</span><span style={{color:"#ffd45a"}}>132 участника</span></div>
+              <div className="side-roulette" style={{marginTop:12}}>
+                <div className="side-track">
+                  {minis.concat(minis).slice(0,12).map(([name, price, color], i) => (
+                    <div className="side-item" key={name+i} style={{borderColor: color+"66"}}>
+                      <div>🔫</div><div>{String(name).split("|")[0]}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <button className="btn" style={{width:"100%",marginTop:14}}>Участвовать за 100 {config.boomCoinShort}</button>
             </div>
-          </section>
 
-          <CaseSection title="🔥 Популярные кейсы" subtitle="Самые открываемые на витрине" items={popular} />
-          <CaseSection title="🎁 Бесплатные и за депозит" subtitle="Daily, welcome и бонусы за пополнение" items={free} />
-          <CaseSection title="🔫 Оружейные коллекции" subtitle="AWP, AK-47, M4, пистолеты, ножи и перчатки" items={weapons} />
-          <CaseSection title="💎 Премиум и VIP" subtitle="Дорогие кейсы и редкие категории" items={premium.concat(expensive)} />
-        </div>
+            <div className="roulette-panel">
+              <div className="panel-title">Бонусы</div>
+              <div className="admin-preview-grid" style={{gridTemplateColumns:"repeat(3,1fr)",marginTop:12}}>
+                {["Daily","Промокод","Депозит"].map((x) => (
+                  <Link href="/bonus" className="admin-preview-card" style={{minHeight:110,padding:12}} key={x}>
+                    <div style={{fontSize:28}}>🎁</div><strong>{x}</strong>
+                  </Link>
+                ))}
+              </div>
+            </div>
 
-        <aside style={{ display: "grid", gap: 14, alignContent: "start" }}>
-          <div className="panel side-panel">
-            <div className="panel-title"><span>Последние открытия</span><span className="live-dot">LIVE</span></div>
-            <div style={{ marginTop: 10 }}>
-              {drops.map(([user, box, item, price]) => (
-                <div className="drop-row" key={user + item}>
-                  <div className="avatar">{user[0]}</div>
-                  <div>
-                    <div style={{ fontWeight: 900, fontSize: 13 }}>{user}</div>
-                    <div style={{ color: "rgba(255,255,255,.48)", fontSize: 12 }}>открыл {box}</div>
-                    <div style={{ fontSize: 12 }}>{item}</div>
-                    <div style={{ color: "#ffd45a", fontWeight: 1000, fontSize: 12 }}>{price} {config.boomCoinShort}</div>
+            <div className="roulette-panel">
+              <div className="panel-title">Топ игроков</div>
+              <div className="final-table">
+                {[["Light","AWP Dragon Lore","115 000"],["Dante","Karambit Fade","145 000"],["Scream","M4A4 Howl","85 000"]].map(([u,item,price],i) => (
+                  <div className="final-table-row" key={u}>
+                    <div className="avatar">{i+1}</div>
+                    <div><strong>{u}</strong><div style={{color:"rgba(255,255,255,.45)",fontSize:12}}>{item}</div></div>
+                    <strong style={{color:"#ffd45a"}}>{price}</strong>
                   </div>
-                  <div className="item-thumb" />
+                ))}
+              </div>
+            </div>
+          </aside>
+        </section>
+
+        <section className="final-row">
+          <div className="final-block">
+            <div className="panel-title">Апгрейд</div>
+            <div className="upgrade-preview" style={{marginTop:18}}>
+              <MiniSkin name="AK-47 | Fire Serpent" price="42 000" />
+              <div className="upgrade-preview-circle">48.62%</div>
+              <MiniSkin name="M4A4 | Howl" price="85 000" />
+            </div>
+            <Link href="/upgrade" className="btn" style={{width:"100%",marginTop:16}}>Улучшить</Link>
+          </div>
+
+          <div className="final-block">
+            <div className="panel-title">Сражения</div>
+            <div className="final-table">
+              {["Dragon Battle","Knife Clash","VIP Room","Fast Duel"].map((x,i)=>(
+                <div className="final-table-row" key={x}>
+                  <div className="avatar">VS</div>
+                  <div><strong>{x}</strong><div style={{color:"rgba(255,255,255,.45)",fontSize:12}}>{i+1}/4 игроков</div></div>
+                  <Link href="/battles" style={{color:"#ffd45a",fontWeight:900}}>Смотреть</Link>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="panel side-panel">
-            <div className="panel-title">Быстрые разделы</div>
-            {["Бесплатный кейс", "Пополнить скинами", "Апгрейд Fast Mode", "Создать баттл", "Правила замены"].map((name, i) => (
-              <Link href={["/bonus","/deposit-skins","/upgrade","/battles","/replacement-rules"][i]} className="battle-row" key={name}>
-                <div className="avatar">{i + 1}</div>
-                <div style={{ gridColumn: "span 2", fontWeight: 900 }}>{name}</div>
+          <div className="final-block">
+            <div className="panel-title">Инвентарь</div>
+            <div className="skin-grid" style={{gridTemplateColumns:"repeat(2,1fr)",marginTop:12}}>
+              <MiniSkin name="Karambit | Fade" price="145 000" />
+              <MiniSkin name="AWP | Dragon Lore" price="115 000" />
+            </div>
+            <Link href="/profile" className="btn secondary" style={{width:"100%",marginTop:16}}>Открыть профиль</Link>
+          </div>
+        </section>
+
+        <section className="case-section">
+          <div className="section-head"><h2>VIP-кейсы</h2></div>
+          <div className="case-row-grid">{vip.map((item) => <CaseVisual key={item.name} item={item} wide />)}</div>
+        </section>
+
+        <CaseSection title="🎁 Бесплатные и за депозит" items={bonus} />
+
+        <section className="case-section">
+          <div className="section-head"><h2>Админ-панель</h2></div>
+          <div className="admin-preview-grid">
+            {[["📦","Кейсы","Создание и редактирование"],["🎯","Шансы","Проверка суммы 100%"],["💎","Скины","Пополнения и заявки"],["🎟️","Промокоды","Бонусы и акции"]].map(([icon,title,text])=>(
+              <Link href="/admin" className="admin-preview-card" key={title}>
+                <div style={{fontSize:36}}>{icon}</div>
+                <h3 style={{margin:"12px 0 6px"}}>{title}</h3>
+                <p style={{color:"rgba(255,255,255,.50)"}}>{text}</p>
               </Link>
             ))}
           </div>
+        </section>
 
-          <div className="panel side-panel">
-            <div className="panel-title">Экономика</div>
-            <p style={{ color: "rgba(255,255,255,.58)", fontSize: 13 }}>
-              Все игровые цены показаны в {config.boomCoinName}. При замене недоступного предмета разница возвращается на внутренний баланс.
-            </p>
-          </div>
-        </aside>
-      </section>
-
-      <section className="footer-features">
-        <div className="feature"><strong>⚙️ Честные шансы</strong>Показываем вероятности до открытия.</div>
-        <div className="feature"><strong>🔍 Поиск</strong>Кейсы можно искать по названию и категории.</div>
-        <div className="feature"><strong>🎁 Бонусы</strong>Daily, депозитные и промокоды.</div>
-        <div className="feature"><strong>🔄 Замена</strong>Аналог и возврат разницы в BC.</div>
-        <div className="feature"><strong>💎 Скины</strong>Пополнение скинами через заявки.</div>
-      </section>
-
-      <div className="legal-note">
-        CaseBoom позиционируется как развлекательная игровая платформа с внутренней валютой {config.boomCoinName}. Итоговая правовая модель должна быть проверена профильным юристом перед коммерческим запуском.
+        <div className="legal-note">CaseBoom — развлекательная игровая платформа с внутренней валютой {config.boomCoinName}. Не является официальным продуктом Valve/Steam.</div>
       </div>
     </main>
   );

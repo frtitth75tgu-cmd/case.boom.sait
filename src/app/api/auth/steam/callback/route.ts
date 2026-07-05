@@ -8,10 +8,10 @@ import { ensureReferralProfile } from "@/lib/referrals";
 
 export async function GET(req: NextRequest) {
   const steamId = await verifySteamCallback(req.url);
-  if (!steamId) return NextResponse.redirect(new URL("/login?error=steam", req.url));
+  if (!steamId) return NextResponse.redirect(new URL("/", req.url));
 
   const pending = cookies().get("caseboom_pending_consent")?.value;
-  if (!pending) return NextResponse.redirect(new URL("/login?error=consent", req.url));
+  if (!pending) return NextResponse.redirect(new URL("/", req.url));
 
   const consent = JSON.parse(pending);
   const profile = await fetchSteamProfile(steamId);
@@ -87,5 +87,5 @@ export async function GET(req: NextRequest) {
   cookies().delete("caseboom_pending_consent");
   setSession({ userId: user.id, steamId: user.steamId, role: user.role });
 
-  return NextResponse.redirect(new URL("/profile", req.url));
+  return NextResponse.redirect(new URL("/", req.url));
 }
