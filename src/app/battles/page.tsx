@@ -1,41 +1,45 @@
-export const dynamic = "force-dynamic";
+import { config } from "@/lib/config";
 
-import { prisma } from "@/lib/prisma";
-import { getSession } from "@/lib/session";
+const battles = [
+  ["Inferno Clash", 249, "2/2"],
+  ["Titan War", 599, "3/4"],
+  ["Diamond Room", 50000, "1/2"],
+  ["Knife Duel", 4999, "2/2"],
+  ["Glove Battle", 6999, "3/3"],
+  ["Legacy Fight", 150000, "1/4"],
+];
 
-export default async function BattlesPage() {
-  const session = getSession();
-  const rooms = await prisma.battleRoom.findMany({ orderBy: { createdAt: "desc" }, take: 20 });
-  const cases = await prisma.case.findMany({ where: { isActive: true }, orderBy: { price: "asc" } });
-
+export default function BattlesPage() {
   return (
-    <main className="mx-auto max-w-6xl px-4 py-10">
-      <h1 className="text-4xl font-black">Кейс-батлы</h1>
-      <p className="mt-3 text-white/60">Базовая механика комнат. Полный realtime-режим можно добавить в следующей версии.</p>
+    <main className="page">
+      <section className="panel" style={{ padding: 28 }}>
+        <p style={{ color: "#ffd45a", fontWeight: 900 }}>Battles</p>
+        <h1 style={{ fontSize: 46, margin: "6px 0 0", fontWeight: 1000 }}>Сражения кейсов</h1>
+        <p style={{ color: "rgba(255,255,255,.58)", maxWidth: 760 }}>
+          Комнаты 1×1, 2×2 и приватные баттлы. Победитель получает банк предметов.
+        </p>
+        <div style={{ display: "flex", gap: 10, marginTop: 18 }}>
+          <button className="btn">Создать баттл</button>
+          <button className="btn secondary">Приватная комната</button>
+        </div>
+      </section>
 
-      {session && (
-        <section className="card mt-6 p-6">
-          <h2 className="text-2xl font-black">Создать комнату</h2>
-          <form action="/api/battles/create" method="post" className="mt-5 grid gap-4 md:grid-cols-3">
-            <input className="input" name="title" placeholder="Название комнаты" required />
-            <select className="input" name="caseSlug">
-              {cases.map((c) => <option key={c.id} value={c.slug}>{c.title} · {c.price} ₽</option>)}
-            </select>
-            <button className="btn">Создать</button>
-          </form>
-        </section>
-      )}
-
-      <div className="mt-8 grid gap-5 md:grid-cols-3">
-        {rooms.length ? rooms.map((r) => (
-          <div key={r.id} className="card p-6">
-            <h2 className="text-2xl font-black">{r.title}</h2>
-            <p className="mt-3 text-white/55">{r.mode}</p>
-            <div className="mt-5 rounded-2xl bg-bg p-4 text-accent">{r.status}</div>
-            <a className="btn mt-5" href={`/battles/${r.id}`}>Открыть</a>
-          </div>
-        )) : <p className="text-white/55">Комнат пока нет.</p>}
-      </div>
+      <section className="case-section">
+        <div className="section-head"><h2>Активные комнаты</h2></div>
+        <div className="battle-grid">
+          {battles.map(([name, price, slots]) => (
+            <div className="battle-card" key={String(name)}>
+              <div className="panel-title">{name}</div>
+              <div style={{ fontSize: 28, fontWeight: 1000, color: "#ffd45a", marginTop: 10 }}>{Number(price).toLocaleString("ru-RU")} {config.boomCoinShort}</div>
+              <div style={{ color: "rgba(255,255,255,.50)", marginTop: 4 }}>Игроки: {slots}</div>
+              <div className="battle-slots">
+                {[1,2,3,4].map((i) => <div className="battle-slot" key={i}>{i <= Number(String(slots).split("/")[0]) ? "👤" : "+"}</div>)}
+              </div>
+              <button className="btn" style={{ width: "100%", marginTop: 16 }}>Войти</button>
+            </div>
+          ))}
+        </div>
+      </section>
     </main>
   );
 }

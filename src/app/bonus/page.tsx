@@ -1,42 +1,34 @@
-import Link from "next/link";
 import { config } from "@/lib/config";
 
-export default function BonusPage() {
-  const bonuses = [
-    ["Daily Bonus", "Каждые 24 часа", `50–500 ${config.boomCoinShort}`],
-    ["Weekly Bonus", "За активность недели", `до 2500 ${config.boomCoinShort}`],
-    ["Deposit Bonus", "За пополнение", "бонусный кейс или BC"],
-    ["Promo Bonus", "По промокодам", "баланс, кейсы, BC"],
-    ["Level Bonus", "За повышение уровня", "эксклюзивные кейсы"],
-    ["Task Bonus", "За задания", "открытия, батлы, апгрейды"]
-  ];
+const bonuses = [
+  ["🎁", "Daily Bonus", "Каждые 24 часа", `50–500 ${config.boomCoinShort}`],
+  ["🗓️", "Weekly Bonus", "За активность недели", `до 2500 ${config.boomCoinShort}`],
+  ["💎", "Deposit Bonus", "За пополнение скинами", "бонусный кейс"],
+  ["🎟️", "Promo Bonus", "По промокодам", "BC, кейсы, скидки"],
+  ["🏆", "Level Bonus", "За уровни", "эксклюзивные кейсы"],
+  ["⚔️", "Battle Bonus", "За сражения", "опыт и BC"],
+];
 
+export default function BonusPage() {
   return (
-    <main className="mx-auto max-w-6xl px-4 py-10">
-      <section className="card p-8">
-        <p className="text-accent">Bonus System</p>
-        <h1 className="mt-2 text-5xl font-black">Бонусы CaseBoom</h1>
-        <p className="mt-4 max-w-2xl text-white/60">
-          Все бонусы начисляются во внутренней валюте {config.boomCoinName}. Она используется только внутри платформы: кейсы, апгрейды, батлы и специальные события.
+    <main className="page">
+      <section className="panel" style={{ padding: 28 }}>
+        <p style={{ color: "#ffd45a", fontWeight: 900 }}>Bonus System</p>
+        <h1 style={{ fontSize: 46, margin: "6px 0 0", fontWeight: 1000 }}>Бонусы CaseBoom</h1>
+        <p style={{ color: "rgba(255,255,255,.58)", maxWidth: 760 }}>
+          Бонусы, ежедневные награды, промокоды и кейсы за депозит. Всё начисляется во внутренней валюте {config.boomCoinName}.
         </p>
       </section>
 
-      <div className="mt-8 grid gap-5 md:grid-cols-3">
-        {bonuses.map(([title, subtitle, reward]) => (
-          <div key={title} className="card p-6">
-            <h2 className="text-2xl font-black">{title}</h2>
-            <p className="mt-2 text-white/55">{subtitle}</p>
-            <div className="mt-5 rounded-2xl bg-accent/10 p-4 text-accent">{reward}</div>
+      <section className="admin-grid" style={{ marginTop: 18 }}>
+        {bonuses.map(([icon, title, text, reward]) => (
+          <div className="admin-tile" key={title}>
+            <div style={{ fontSize: 34 }}>{icon}</div>
+            <h3>{title}</h3>
+            <p>{text}</p>
+            <div style={{ color: "#ffd45a", fontWeight: 1000, marginTop: 12 }}>{reward}</div>
           </div>
         ))}
-      </div>
-
-      <section className="card mt-8 p-6">
-        <h2 className="text-2xl font-black">Важно</h2>
-        <p className="mt-3 text-white/60">
-          {config.boomCoinName} не является денежным средством, электронной валютой или способом вывода средств. Баланс используется только внутри CaseBoom.
-        </p>
-        <Link href="/legal/boom-coins" className="btn btn-outline mt-5">Правила Boom Coins</Link>
       </section>
     </main>
   );

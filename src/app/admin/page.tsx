@@ -1,50 +1,36 @@
-export const dynamic = "force-dynamic";
-
 import Link from "next/link";
-import { requireAdmin } from "@/lib/authGuards";
-import { prisma } from "@/lib/prisma";
 
-export default async function AdminPage() {
-  await requireAdmin();
+const tiles = [
+  ["📦", "Кейсы", "Создание, категории, цены и обложки", "/admin/cases"],
+  ["🎯", "Шансы", "Редактирование выпадений по каждому кейсу", "/admin/cases"],
+  ["🔫", "Предметы", "Скины, редкости, цены и изображения", "/admin/skins"],
+  ["💎", "Пополнения скинами", "Проверка трейдов и начисление BC", "/admin/skin-deposits"],
+  ["⚙️", "Экономика", "Boom Coins, замены и лимиты", "/admin/economy"],
+  ["🎟️", "Промокоды", "Бонусы, акции и депозитные кейсы", "/admin/promocodes"],
+  ["👤", "Пользователи", "Баланс, роли и ограничения", "/admin/users"],
+  ["📊", "Статистика", "Открытия, баттлы, доходность", "/admin/stats"],
+];
 
-  const [users, payments, openings, cases, promos, trades] = await Promise.all([
-    prisma.user.count(),
-    prisma.paymentIntent.count(),
-    prisma.caseOpening.count(),
-    prisma.case.count(),
-    prisma.promoCode.count(),
-    prisma.tradeOffer.count()
-  ]);
-
-  const cards = [
-    ["/admin/users", "Пользователи", users],
-    ["/admin/cases", "Кейсы", cases],
-    ["/admin/payments", "Платежи", payments],
-    ["/admin/promos", "Промокоды", promos],
-    ["/admin/trades", "Трейды", trades],
-    ["/admin/openings", "Открытия", openings],
-    ["/admin/market", "Авто-закупка", "→"],
-    ["/admin/balance", "Выдача баланса", "→"],
-    ["/admin/notifications", "Уведомления", "→"],
-    ["/admin/actions", "Журнал действий", "→"],
-    ["/admin/economy", "Экономика", "→"],
-    ["/admin/skin-deposits", "Пополнения скинами", "→"],
-    ["/admin/settings", "Настройки", "→"]
-  ];
-
+export default function AdminPage() {
   return (
-    <main className="mx-auto max-w-7xl px-4 py-10">
-      <h1 className="text-4xl font-black">Админ-панель</h1>
-      <p className="mt-3 text-white/60">Управление проектом CaseBoom Pro v2.</p>
+    <main className="page">
+      <section className="panel" style={{ padding: 28 }}>
+        <p style={{ color: "#ffd45a", fontWeight: 900 }}>Admin Panel</p>
+        <h1 style={{ fontSize: 46, margin: "6px 0 0", fontWeight: 1000 }}>Админка CaseBoom</h1>
+        <p style={{ color: "rgba(255,255,255,.58)", maxWidth: 760 }}>
+          Управление кейсами, шансами, Boom Coins, заявками на пополнение скинами и экономикой проекта.
+        </p>
+      </section>
 
-      <div className="mt-8 grid gap-5 md:grid-cols-3">
-        {cards.map(([href, title, value]) => (
-          <Link href={href as string} key={href as string} className="card p-6 transition hover:border-accent/40">
-            <div className="text-white/50">{title}</div>
-            <div className="mt-2 text-4xl font-black text-accent">{value}</div>
+      <section className="admin-grid" style={{ marginTop: 18 }}>
+        {tiles.map(([icon, title, text, href]) => (
+          <Link href={href} className="admin-tile" key={title}>
+            <div style={{ fontSize: 34 }}>{icon}</div>
+            <h3>{title}</h3>
+            <p>{text}</p>
           </Link>
         ))}
-      </div>
+      </section>
     </main>
   );
 }

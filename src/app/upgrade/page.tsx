@@ -1,58 +1,43 @@
-import { redirect } from "next/navigation";
-import { getSession } from "@/lib/session";
-import { prisma } from "@/lib/prisma";
 import { config } from "@/lib/config";
-import { ItemCard } from "@/components/ItemCard";
+import { SkinCard } from "@/components/SkinCard";
 
-export default async function UpgradePage() {
-  const session = getSession();
-  if (!session) redirect("/login");
+const left = ["AK-47 | Redline", "Restricted", 850] as const;
+const right = ["AWP | Asiimov", "Covert", 4300] as const;
 
-  const [inventory, targets] = await Promise.all([
-    prisma.inventoryItem.findMany({ where: { userId: session.userId, isLocked: false }, orderBy: { createdAt: "desc" }, take: 20 }),
-    prisma.skinCatalogItem.findMany({ where: { isActive: true }, orderBy: { price: "asc" }, take: 50 }).catch(() => [])
-  ]);
-
+export default function UpgradePage() {
   return (
-    <main className="mx-auto max-w-6xl px-4 py-10">
-      <section className="card p-8">
-        <p className="text-accent">Upgrade</p>
-        <h1 className="mt-2 text-4xl font-black">Апгрейд предметов</h1>
-        <p className="mt-3 text-white/60">Обычный режим с анимацией или ⚡ Fast Mode для быстрого результата.</p>
+    <main className="page">
+      <section className="panel" style={{ padding: 28 }}>
+        <p style={{ color: "#ffd45a", fontWeight: 900 }}>Upgrade</p>
+        <h1 style={{ fontSize: 46, margin: "6px 0 0", fontWeight: 1000 }}>Апгрейд предметов</h1>
+        <p style={{ color: "rgba(255,255,255,.58)", maxWidth: 760 }}>
+          Новый дизайн апгрейда с обычной анимацией и Fast Mode для быстрой прокрутки.
+        </p>
       </section>
 
-      <section className="card mt-8 p-6">
-        <form action="/api/upgrade/perform" method="post" className="grid gap-4 md:grid-cols-4">
-          <select className="input" name="inventoryItemId" required>
-            {inventory.map((i) => <option key={i.id} value={i.id}>{i.name} · {i.price} {config.boomCoinShort}</option>)}
-          </select>
-          <select className="input" name="targetSkinId" required>
-            {targets.map((t) => <option key={t.id} value={t.id}>{t.marketHashName} · {t.price} {config.boomCoinShort}</option>)}
-          </select>
-          <label className="flex items-center gap-3 rounded-2xl border border-white/10 bg-bg px-4">
-            <input type="checkbox" name="fastMode" value="1" />
-            <span>⚡ Fast Mode</span>
-          </label>
-          <button className="btn">Апгрейд</button>
-        </form>
-      </section>
-
-      <section className="mt-8 grid gap-6 md:grid-cols-2">
-        <div>
-          <h2 className="text-2xl font-black">Твои предметы</h2>
-          <div className="mt-4 grid gap-4">
-            {inventory.length ? inventory.slice(0, 6).map((i) => (
-              <ItemCard key={i.id} name={i.name} rarity={i.rarity} price={i.price} image={i.image} />
-            )) : <p className="text-white/55">Сначала открой кейс.</p>}
+      <section className="panel" style={{ padding: 24, marginTop: 18 }}>
+        <div className="upgrade-arena">
+          <SkinCard name={left[0]} rarity={left[1]} price={left[2]} />
+          <div>
+            <div className="upgrade-orb"><span>19.76%</span></div>
+            <div style={{ display: "flex", gap: 10, justifyContent: "center", marginTop: 16 }}>
+              <button className="btn">Апгрейд</button>
+              <button className="btn secondary">⚡ Fast Mode</button>
+            </div>
           </div>
+          <SkinCard name={right[0]} rarity={right[1]} price={right[2]} />
         </div>
-        <div>
-          <h2 className="text-2xl font-black">Цели</h2>
-          <div className="mt-4 grid gap-4">
-            {targets.slice(-6).map((t) => (
-              <ItemCard key={t.id} name={t.marketHashName} rarity={t.rarity} price={t.price} image={t.image} />
-            ))}
-          </div>
+      </section>
+
+      <section className="case-section">
+        <div className="section-head"><h2>История апгрейдов</h2></div>
+        <div className="panel" style={{ padding: 14 }}>
+          {["Успех · AWP | Asiimov", "Неудача · M4A1-S | Printstream", "Успех · AK-47 | Vulcan"].map((x, i) => (
+            <div className="battle-row" key={x}>
+              <div className="avatar">{i + 1}</div>
+              <div style={{ gridColumn: "span 2", fontWeight: 900 }}>{x}</div>
+            </div>
+          ))}
         </div>
       </section>
     </main>

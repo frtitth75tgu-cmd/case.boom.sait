@@ -1,41 +1,65 @@
-export const dynamic = "force-dynamic";
-
-import { prisma } from "@/lib/prisma";
-import { getSession } from "@/lib/session";
-import { ItemCard } from "@/components/ItemCard";
-import { notFound } from "next/navigation";
-import OpenCaseButton from "./OpenCaseButton";
+import Link from "next/link";
 import { config } from "@/lib/config";
+import { SkinCard } from "@/components/SkinCard";
 
-export default async function CasePage({ params }: { params: { slug: string } }) {
-  const item = await prisma.case.findUnique({
-    where: { slug: params.slug },
-    include: { items: { orderBy: { price: "asc" } } }
-  });
+const items = [
+  ["AK-47 | Redline", "Restricted", 850],
+  ["AWP | Asiimov", "Covert", 4300],
+  ["M4A1-S | Printstream", "Covert", 9800],
+  ["USP-S | Cortex", "Classified", 740],
+  ["Glock-18 | Vogue", "Classified", 680],
+  ["Desert Eagle | Code Red", "Covert", 5200],
+  ["★ Karambit | Doppler", "Exotic", 115000],
+  ["★ Sport Gloves | Vice", "Exotic", 145000],
+];
 
-  if (!item) return notFound();
-
-  const session = getSession();
-
+export default function CaseDetailPage({ params }: { params: { slug: string } }) {
   return (
-    <main className="mx-auto max-w-6xl px-4 py-10">
-      <section className="card glow p-8 text-center">
-        <p className="text-sm uppercase tracking-widest text-accent">Case</p>
-        <h1 className="mt-3 text-5xl font-black">{item.title}</h1>
-        <p className="mx-auto mt-4 max-w-xl text-white/60">{item.description}</p>
-        <div className="mt-6 text-3xl font-black text-accent">{item.price} {config.boomCoinShort}</div>
-        <OpenCaseButton caseSlug={item.slug} isLoggedIn={Boolean(session)} items={item.items.map(i => ({ name: i.name, image: i.image, price: i.price }))} />
+    <main className="page">
+      <section className="hero-grid">
+        <div className="opening-stage">
+          <h1 style={{ fontSize: 46, margin: 0, fontWeight: 1000 }}>Diamond Vault</h1>
+          <p style={{ color: "rgba(255,255,255,.58)", maxWidth: 660 }}>
+            Витрина кейса, рулетка открытия, список предметов и прозрачные шансы.
+          </p>
+
+          <div className="roulette-window" style={{ marginTop: 22 }}>
+            <div className="roulette-pointer" />
+            <div className="roulette-track">
+              {items.concat(items).map(([name, rarity, price], i) => (
+                <div className="roulette-item" key={name + i}>
+                  <div style={{ textAlign: "center", padding: 8 }}>
+                    <div style={{ fontSize: 28 }}>🔫</div>
+                    <div style={{ fontSize: 12, fontWeight: 900, marginTop: 6 }}>{name}</div>
+                    <div style={{ color: "#ffd45a", fontWeight: 1000, marginTop: 4 }}>{Number(price).toLocaleString("ru-RU")} {config.boomCoinShort}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div style={{ display: "flex", gap: 12, marginTop: 22 }}>
+            <button className="btn">Открыть за 50 000 {config.boomCoinShort}</button>
+            <button className="btn secondary">Открыть быстро</button>
+          </div>
+        </div>
+
+        <aside className="panel side-panel">
+          <div className="panel-title">Информация</div>
+          <div className="stat-card" style={{ marginTop: 12 }}><small>Цена</small><strong>50 000 {config.boomCoinShort}</strong></div>
+          <div className="stat-card" style={{ marginTop: 12 }}><small>Предметов</small><strong>128</strong></div>
+          <div className="stat-card" style={{ marginTop: 12 }}><small>Редкий шанс</small><strong>0.18%</strong></div>
+          <div className="legal-note">Шансы отображаются до открытия. Результат сохраняется в истории.</div>
+        </aside>
       </section>
 
-      <section className="mt-10">
-        <h2 className="text-3xl font-black">Содержимое</h2>
-        <div className="mt-5 grid gap-4 md:grid-cols-3">
-          {item.items.map((i) => (
-            <div key={i.id}>
-              <ItemCard name={i.name} rarity={i.rarity} price={i.price} image={i.image} />
-              <p className="mt-2 text-sm text-white/45">Шанс: {(i.chanceBps / 100).toFixed(2)}%</p>
-            </div>
-          ))}
+      <section className="case-section">
+        <div className="section-head">
+          <h2>Предметы внутри кейса</h2>
+          <Link href="/fairness" style={{ color: "#ffd45a", fontWeight: 900 }}>Проверка честности →</Link>
+        </div>
+        <div className="skin-grid">
+          {items.map(([name, rarity, price]) => <SkinCard key={name} name={String(name)} rarity={String(rarity)} price={Number(price)} />)}
         </div>
       </section>
     </main>
