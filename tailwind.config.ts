@@ -5,12 +5,16 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        bg: "#070b12",
-        card: "#101827",
-        soft: "#182338",
-        accent: "#ff8a1c",
-        hot: "#ff3c6a",
-        ice: "#66c0f4"
+        bg: "#07080d",
+        card: "#10131d",
+        soft: "#171c2b",
+        accent: "#f6c453",
+        hot: "#ff4d6d",
+        ice: "#62e6ff",
+        boom: "#f6c453"
+      },
+      boxShadow: {
+        boom: "0 0 60px rgba(246,196,83,.18)"
       }
     },
   },

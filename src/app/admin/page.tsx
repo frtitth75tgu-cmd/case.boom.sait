@@ -27,6 +27,7 @@ export default async function AdminPage() {
     ["/admin/balance", "Выдача баланса", "→"],
     ["/admin/notifications", "Уведомления", "→"],
     ["/admin/actions", "Журнал действий", "→"],
+    ["/admin/economy", "Экономика", "→"],
     ["/admin/settings", "Настройки", "→"]
   ];
 
