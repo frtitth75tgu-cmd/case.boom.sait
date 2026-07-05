@@ -317,3 +317,29 @@ model EconomySetting {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+
+model SkinDeposit {
+  id             String   @id @default(cuid())
+  userId         String
+  tradeUrl       String
+  itemsText      String
+  estimatedValue Int      @default(0)
+  creditedCoins  Int      @default(0)
+  status         String   @default("PENDING")
+  adminComment   String?
+  reviewedById   String?
+  payload        Json?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model AccountPenalty {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String
+  reason    String
+  level     Int      @default(1)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
