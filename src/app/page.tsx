@@ -1,100 +1,170 @@
 import Link from "next/link";
-import { prisma } from "@/lib/prisma";
 import { config } from "@/lib/config";
-import { CaseCard } from "@/components/CaseCard";
 
-export default async function HomePage() {
-  const cases = await prisma.case.findMany({ where: { isActive: true }, take: 8, orderBy: { price: "asc" } }).catch(() => []);
-  const openings = await prisma.caseOpening.findMany({ orderBy: { createdAt: "desc" }, take: 6 }).catch(() => []);
+const caseColors = [
+  ["Rookie Case", "99", "#32ff62", "#075c28", "TOP"],
+  ["Inferno Case", "249", "#ff8a2a", "#481509", "TOP"],
+  ["Titan Case", "599", "#4aa3ff", "#0b2c5d", "TOP"],
+  ["Diamond Vault", "50 000", "#ff40df", "#51215e", "TOP"],
+  ["Emperor Vault", "100 000", "#ffd45a", "#6d4308", "TOP"],
+  ["Legacy Vault", "150 000", "#ffcf5a", "#2e2507", "TOP"],
+  ["Frost Case", "199", "#62e6ff", "#14385f", "NEW"],
+  ["Cyber Case", "299", "#ff4de3", "#4b1456", "NEW"],
+  ["Neon Case", "399", "#ff31c8", "#581560", "NEW"],
+  ["Shadow Case", "499", "#a7a7a7", "#171a23", "NEW"],
+  ["Dragon Case", "699", "#ff5b22", "#53200a", "NEW"],
+  ["Universe Case", "999", "#9a5cff", "#241250", "NEW"],
+];
 
+const drops = [
+  ["Timon", "Diamond Vault", "AWP | Dragon Lore", "125 000"],
+  ["Danya", "Titan Case", "M4A4 | Howl", "58 750"],
+  ["kostya", "Legacy Vault", "★ Karambit | Lore", "103 250"],
+  ["Fenya", "Inferno Case", "AK-47 | Fire Serpent", "27 350"],
+  ["Boomer", "Emperor Vault", "★ Sport Gloves", "89 600"],
+];
+
+const battles = [
+  ["3 450", "4/4"],
+  ["12 500", "2/2"],
+  ["8 990", "3/3"],
+];
+
+export default function HomePage() {
   return (
-    <main className="mx-auto max-w-7xl px-4 py-8">
-      <section className="card overflow-hidden p-8 shadow-boom md:p-14">
-        <div className="grid gap-8 md:grid-cols-[1.2fr_.8fr]">
-          <div>
-            <div className="mb-5 inline-flex rounded-full border border-accent/30 bg-accent/10 px-4 py-2 text-sm font-bold text-accent">
-              Boom Coins · Кейсы · Батлы · Апгрейд · Выдача скинами
-            </div>
-            <h1 className="max-w-3xl text-5xl font-black leading-[.95] md:text-7xl">
-              Открывай. Сражайся. Улучшай. Получай скины.
+    <main className="page">
+      <section className="hero-grid">
+        <div>
+          <div className="hero">
+            <div className="hero-weapon" />
+            <div className="hero-knife" />
+            <h1>
+              Открывай<br />
+              <span>Сражайся</span><br />
+              Улучшай
             </h1>
-            <p className="mt-6 max-w-2xl text-lg text-white/62">
-              CaseBoom — развлекательная игровая платформа с внутренней валютой {config.boomCoinName}, прозрачными шансами и выдачей предметов через заявки.
+            <p>
+              CaseBoom — честные открытия, Boom Coins, баттлы, апгрейд и выдача скинов через заявки.
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="/cases" className="btn">Открыть кейсы</Link>
-              <Link href="/bonus" className="btn btn-outline">Получить бонус</Link>
+            <div style={{ display: "flex", gap: 12, marginTop: 28, position: "relative", zIndex: 2 }}>
+              <Link href="/cases" className="btn">К открытиям</Link>
+              <Link href="/bonus" className="btn secondary">Бонусы</Link>
             </div>
-            <p className="mt-5 text-xs text-white/45">
-              Платформа не заявляет себя казино или букмекерским сервисом. Итоговая правовая модель должна быть проверена профильным юристом перед коммерческим запуском.
-            </p>
           </div>
 
-          <div className="grid gap-4">
-            {[
-              ["100+", "кейсов в концепции"],
-              ["BC", "внутренняя валюта"],
-              ["Fast", "режим апгрейда"],
-              ["Skin", "выдача предметами"]
-            ].map(([a,b]) => (
-              <div key={a} className="rounded-3xl border border-white/10 bg-white/[.04] p-5">
-                <div className="text-4xl font-black text-accent">{a}</div>
-                <div className="mt-1 text-white/55">{b}</div>
+          <div className="toolbar panel" style={{ padding: 12 }}>
+            <input className="input" placeholder="🔍 Поиск кейсов..." />
+            <button className="filter-btn">🎁 Все</button>
+            <button className="filter-btn">Бесплатные</button>
+            <button className="filter-btn">За баллы</button>
+            <button className="filter-btn">За депозит</button>
+          </div>
+
+          <div className="section-head">
+            <h2>🔥 Популярные кейсы</h2>
+            <Link href="/cases" style={{ color: "#ffd45a", fontWeight: 900 }}>Смотреть все →</Link>
+          </div>
+          <div className="case-grid">
+            {caseColors.slice(0, 6).map(([name, price, a, b, tag]) => (
+              <Link href="/cases" className="case-card" key={name} style={{ ["--case-a" as any]: a, ["--case-b" as any]: b, ["--case-glow" as any]: a + "66" }}>
+                <span className="case-tag">{tag}</span>
+                <div className="case-art"><div className="case-box" /></div>
+                <h3>{name}</h3>
+                <div className="case-price">{price} {config.boomCoinShort}</div>
+              </Link>
+            ))}
+          </div>
+
+          <div className="section-head">
+            <h2>🆕 Новые кейсы</h2>
+          </div>
+          <div className="case-grid">
+            {caseColors.slice(6, 12).map(([name, price, a, b, tag]) => (
+              <Link href="/cases" className="case-card" key={name} style={{ ["--case-a" as any]: a, ["--case-b" as any]: b, ["--case-glow" as any]: a + "66" }}>
+                <span className="case-tag" style={{ background: "#20c66b" }}>{tag}</span>
+                <div className="case-art"><div className="case-box" /></div>
+                <h3>{name}</h3>
+                <div className="case-price">{price} {config.boomCoinShort}</div>
+              </Link>
+            ))}
+          </div>
+
+          <div className="section-head">
+            <h2>🎁 Кейсы за депозит</h2>
+          </div>
+          <div className="case-grid">
+            {["от 100", "от 500", "от 1000", "от 3000", "от 5000", "от 10000"].map((v) => (
+              <div className="case-card" key={v} style={{ minHeight: 110 }}>
+                <h3>За депозит {v} BC</h3>
+                <div className="case-price">Бесплатно</div>
               </div>
             ))}
           </div>
         </div>
-      </section>
 
-      <section className="mt-8 grid gap-4 md:grid-cols-4">
-        {[
-          ["🎁", "Бонусы", "Daily, weekly, депозитные и промокоды"],
-          ["🔍", "Поиск", "Кейсы и предметы по названию и категории"],
-          ["⚡", "Fast Mode", "Быстрый апгрейд без долгой анимации"],
-          ["🔄", "Замена", "Если предмета нет — выбор аналога и возврат разницы в BC"]
-        ].map(([icon,title,text]) => (
-          <div key={title} className="card p-5">
-            <div className="text-3xl">{icon}</div>
-            <h3 className="mt-3 text-xl font-black">{title}</h3>
-            <p className="mt-2 text-sm text-white/55">{text}</p>
+        <aside style={{ display: "grid", gap: 14, alignContent: "start" }}>
+          <div className="panel side-panel">
+            <div className="panel-title">
+              <span>Последние открытия</span>
+              <span className="live-dot">LIVE</span>
+            </div>
+            <div style={{ marginTop: 10 }}>
+              {drops.map(([user, box, item, price]) => (
+                <div className="drop-row" key={user + item}>
+                  <div className="avatar">{user[0]}</div>
+                  <div>
+                    <div style={{ fontWeight: 900, fontSize: 13 }}>{user}</div>
+                    <div style={{ color: "rgba(255,255,255,.48)", fontSize: 12 }}>открыл {box}</div>
+                    <div style={{ fontSize: 12 }}>{item}</div>
+                    <div style={{ color: "#ffd45a", fontWeight: 1000, fontSize: 12 }}>{price} {config.boomCoinShort}</div>
+                  </div>
+                  <div className="item-thumb" />
+                </div>
+              ))}
+            </div>
           </div>
-        ))}
-      </section>
 
-      <section className="mt-12">
-        <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
-          <div>
-            <h2 className="text-3xl font-black">Популярные кейсы</h2>
-            <p className="mt-2 text-white/55">Витрина с новым стилем CaseBoom.</p>
-          </div>
-          <Link href="/cases" className="text-accent">Все кейсы →</Link>
-        </div>
-        <div className="grid gap-5 md:grid-cols-4">
-          {cases.map((c) => <CaseCard key={c.id} item={c} />)}
-        </div>
-      </section>
-
-      <section className="mt-12 grid gap-6 md:grid-cols-2">
-        <div className="card p-6">
-          <h2 className="text-2xl font-black">Последние открытия</h2>
-          <div className="mt-4 space-y-3">
-            {openings.length ? openings.map((o) => (
-              <div key={o.id} className="rounded-2xl bg-white/[.04] p-4">
-                <strong>{o.itemName}</strong>
-                <span className="ml-2 text-accent">{o.itemPrice} {config.boomCoinShort}</span>
+          <div className="panel side-panel">
+            <div className="panel-title">
+              <span>Активные баттлы</span>
+              <Link href="/battles" style={{ color: "#d98cff", fontSize: 11 }}>Смотреть все</Link>
+            </div>
+            {battles.map(([price, players], i) => (
+              <div className="battle-row" key={price}>
+                <div className="avatar">{i + 1}</div>
+                <div style={{ fontWeight: 1000 }}>VS</div>
+                <div style={{ textAlign: "right" }}>
+                  <div style={{ color: "#ffd45a", fontWeight: 1000 }}>{price} {config.boomCoinShort}</div>
+                  <div style={{ color: "rgba(255,255,255,.55)", fontSize: 12 }}>{players}</div>
+                </div>
               </div>
-            )) : <p className="text-white/55">Открытий пока нет.</p>}
+            ))}
           </div>
-        </div>
 
-        <div className="card p-6">
-          <h2 className="text-2xl font-black">Принцип честности</h2>
-          <p className="mt-3 text-white/60">
-            Шансы должны отображаться пользователю до открытия. Результат считается сервером и сохраняется в истории. Изменять результат после открытия нельзя.
-          </p>
-          <Link href="/fairness" className="btn btn-outline mt-5">Проверяемая честность</Link>
-        </div>
+          <div className="panel side-panel">
+            <div className="panel-title">Топ игроков недели</div>
+            {["Extazzy", "Timon", "Fenya", "Danya", "Boomer"].map((name, i) => (
+              <div className="battle-row" key={name}>
+                <div className="avatar">{i + 1}</div>
+                <div>{name}</div>
+                <div style={{ color: "#ffd45a", fontWeight: 1000 }}>{[285450,154320,98760,86370,71540][i].toLocaleString("ru-RU")} {config.boomCoinShort}</div>
+              </div>
+            ))}
+          </div>
+        </aside>
       </section>
+
+      <section className="footer-features">
+        <div className="feature"><strong>⚙️ Честные шансы</strong>Шансы отображаются до открытия.</div>
+        <div className="feature"><strong>🔐 Безопасность</strong>Данные и заявки защищены.</div>
+        <div className="feature"><strong>🎧 Поддержка</strong>Помощь по заявкам и выдаче.</div>
+        <div className="feature"><strong>🔄 Замена</strong>Если предмета нет — аналог и возврат разницы.</div>
+        <div className="feature"><strong>⚡ Fast Mode</strong>Быстрый апгрейд без долгой прокрутки.</div>
+      </section>
+
+      <div className="legal-note">
+        CaseBoom позиционируется как развлекательная игровая платформа с внутренней валютой {config.boomCoinName}. Сервис не является официальным продуктом Valve/Steam. Итоговая правовая модель должна быть проверена профильным юристом перед коммерческим запуском.
+      </div>
     </main>
   );
 }

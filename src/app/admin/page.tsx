@@ -28,6 +28,7 @@ export default async function AdminPage() {
     ["/admin/notifications", "Уведомления", "→"],
     ["/admin/actions", "Журнал действий", "→"],
     ["/admin/economy", "Экономика", "→"],
+    ["/admin/skin-deposits", "Пополнения скинами", "→"],
     ["/admin/settings", "Настройки", "→"]
   ];
 

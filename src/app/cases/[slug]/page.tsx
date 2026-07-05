@@ -5,6 +5,7 @@ import { getSession } from "@/lib/session";
 import { ItemCard } from "@/components/ItemCard";
 import { notFound } from "next/navigation";
 import OpenCaseButton from "./OpenCaseButton";
+import { config } from "@/lib/config";
 
 export default async function CasePage({ params }: { params: { slug: string } }) {
   const item = await prisma.case.findUnique({
@@ -22,7 +23,7 @@ export default async function CasePage({ params }: { params: { slug: string } })
         <p className="text-sm uppercase tracking-widest text-accent">Case</p>
         <h1 className="mt-3 text-5xl font-black">{item.title}</h1>
         <p className="mx-auto mt-4 max-w-xl text-white/60">{item.description}</p>
-        <div className="mt-6 text-3xl font-black text-accent">{item.price} ₽</div>
+        <div className="mt-6 text-3xl font-black text-accent">{item.price} {config.boomCoinShort}</div>
         <OpenCaseButton caseSlug={item.slug} isLoggedIn={Boolean(session)} items={item.items.map(i => ({ name: i.name, image: i.image, price: i.price }))} />
       </section>
 

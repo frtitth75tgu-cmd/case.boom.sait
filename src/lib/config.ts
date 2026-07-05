@@ -4,10 +4,13 @@ export const config = {
   sessionSecret: process.env.SESSION_SECRET || "dev_secret",
   steamApiKey: process.env.STEAM_API_KEY || "",
   supportUrl: process.env.SUPPORT_URL || "https://t.me/your_support",
-  docsVersion: process.env.DOCS_VERSION || "2026-07-05-rf-v5",
+  docsVersion: process.env.DOCS_VERSION || "2026-07-05-rf-v6",
   paymentProvider: process.env.PAYMENT_PROVIDER || "demo",
   paymentWebhookSecret: process.env.PAYMENT_WEBHOOK_SECRET || "dev_webhook_secret",
   adminSteamId: process.env.ADMIN_STEAM_ID || "",
+
+  boomCoinName: process.env.NEXT_PUBLIC_BOOM_COIN_NAME || "Boom Coins",
+  boomCoinShort: process.env.NEXT_PUBLIC_BOOM_COIN_SHORT || "BC",
 
   rateLimitEnabled: process.env.RATE_LIMIT_ENABLED === "true",
   steamTradeBotEnabled: process.env.STEAM_TRADE_BOT_ENABLED === "true",
@@ -25,4 +28,13 @@ export const config = {
   marketApiKey: process.env.MARKET_API_KEY || "",
   marketMaxItemPriceRub: Number(process.env.MARKET_MAX_ITEM_PRICE_RUB || 5000),
   marketDailyBudgetRub: Number(process.env.MARKET_DAILY_BUDGET_RUB || 25000),
+
+  replacementMaxDelta: Number(process.env.REPLACEMENT_MAX_DELTA || 2000),
+  replacementMaxPercent: Number(process.env.REPLACEMENT_MAX_PERCENT || 5),
+
+  skinDepositEnabled: process.env.SKIN_DEPOSIT_ENABLED !== "false",
+  skinDepositMinValue: Number(process.env.SKIN_DEPOSIT_MIN_VALUE || 100),
+  skinDepositCommissionPercent: Number(process.env.SKIN_DEPOSIT_COMMISSION_PERCENT || 10),
+  skinDepositBotTradeUrl: process.env.SKIN_DEPOSIT_BOT_TRADE_URL || "",
+
 };
