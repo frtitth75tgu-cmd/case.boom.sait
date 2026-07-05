@@ -1,26 +1,58 @@
-# CaseBoom Pro v6
+# CaseBoom Pro v7
 
-Полноценная версия CaseBoom с новой концепцией:
+Версия с расширенной юридической частью, Boom Coins, новым дизайном, поиском по кейсам и seed-базой на 100 кейсов.
 
-- уникальный тёмный дизайн;
-- Boom Coins вместо рублей в игровых интерфейсах;
-- бонусная система;
-- Fast Mode в апгрейде;
-- правила замены предмета;
-- возврат разницы на внутренний баланс;
-- страница правил сервиса;
-- админ-раздел экономики;
-- готовность к Vercel + Neon.
+## Что добавлено
+
+- Полные страницы документов: соглашение, конфиденциальность, правила сервиса, платежи, персональные данные, ответственное использование.
+- Аккуратные формулировки: CaseBoom позиционируется как развлекательная платформа с внутренней валютой, не как казино.
+- Boom Coins в интерфейсе вместо рублей.
+- Поиск и фильтры кейсов.
+- Seed на 100 кейсов: бесплатные, дешёвые, премиум, Vault 50k+.
+- Fast Mode в апгрейде.
+- Админ-раздел экономики.
+- Правило замены предмета: аналог дешевле + разница возвращается в Boom Coins.
 
 ## Важно
 
-Файл `.env` с реальными секретами не должен попадать в публичный GitHub. В проекте оставлены `.env.example` и `.env.production.example`.
+Юридические тексты являются рабочим шаблоном. Они не делают сервис автоматически законным. Перед коммерческим запуском нужно проверить фактическую модель работы у профильного юриста.
 
-Для локального запуска создай `.env` сам и вставь туда `DATABASE_URL` из Neon.
+## Запуск
 
-## После загрузки на GitHub
+```bash
+npm install
+npx prisma db push
+npm run prisma:seed
+npm run dev
+```
 
-Выполни локально:
+## Vercel переменные
+
+```env
+DATABASE_URL="postgresql://..."
+NEXT_PUBLIC_SITE_NAME="CaseBoom"
+NEXT_PUBLIC_SITE_URL="https://your-project.vercel.app"
+SESSION_SECRET="change_this_long_random_secret"
+PAYMENT_WEBHOOK_SECRET="change_this_payment_secret"
+NEXT_PUBLIC_BOOM_COIN_NAME="Boom Coins"
+NEXT_PUBLIC_BOOM_COIN_SHORT="BC"
+REPLACEMENT_MAX_DELTA="2000"
+REPLACEMENT_MAX_PERCENT="5"
+```
+
+
+## CaseBoom Pro v9 — Skin Deposits
+
+Добавлено:
+- страница `/deposit-skins`;
+- заявки на пополнение скинами;
+- админка `/admin/skin-deposits`;
+- ручное подтверждение и начисление Boom Coins;
+- статусы заявок;
+- санкции аккаунта за некорректную трейд-ссылку, отмену трейда или злоупотребления;
+- правила пополнения скинами `/legal/skin-deposit-rules`.
+
+После обновления:
 
 ```bash
 npm install
@@ -28,15 +60,11 @@ npx prisma db push
 npm run prisma:seed
 ```
 
-На Vercel добавь новые переменные:
+Новые переменные:
 
 ```env
-NEXT_PUBLIC_BOOM_COIN_NAME="Boom Coins"
-NEXT_PUBLIC_BOOM_COIN_SHORT="BC"
-REPLACEMENT_MAX_DELTA="2000"
-REPLACEMENT_MAX_PERCENT="5"
+SKIN_DEPOSIT_ENABLED="true"
+SKIN_DEPOSIT_MIN_VALUE="100"
+SKIN_DEPOSIT_COMMISSION_PERCENT="10"
+SKIN_DEPOSIT_BOT_TRADE_URL=""
 ```
-
-## Юридическая заметка
-
-На сайте добавлены страницы и формулировки о том, что CaseBoom позиционируется как развлекательная игровая платформа с внутренней валютой, а не как казино. Но юридически оценивается фактическая модель работы сервиса. Перед коммерческим запуском нужна проверка профильным юристом.
