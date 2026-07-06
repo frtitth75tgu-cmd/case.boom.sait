@@ -1,14 +1,25 @@
-import Link from "next/link";
+import { AdminShell } from "@/components/AdminShell";
 
 export default function Page() {
   return (
-    <main className="page">
-      <section className="panel" style={{ padding: 28 }}>
-        <span className="route-status">Раздел работает</span>
-        <h1 style={{ fontSize: 46, margin: "12px 0 0", fontWeight: 1000 }}>Пользователи</h1>
-        <p style={{ color: "rgba(255,255,255,.58)" }}>Здесь будет управление пользователями.</p>
-        <Link href="/" className="btn" style={{ marginTop: 18 }}>На главную</Link>
+    <AdminShell title="Пользователи">
+      <section className="candy-panel">
+        <h2 className="candy-title">Пользователи</h2>
+        <p className="candy-muted">Баланс, роли, блокировки и профиль.</p>
+
+        <form className="form-stack" style={{ marginTop: 18 }}>
+          <div className="form-two">
+            <input className="input" placeholder="Steam ID" />
+            <input className="input" placeholder="Баланс" />
+          </div>
+          <input className="input" placeholder="Роль" />
+          <button className="btn" type="button">Сохранить</button>
+        </form>
+
+        <div className="notice">
+          Раздел уже готов визуально. Следующий этап — подключить сохранение в Prisma.
+        </div>
       </section>
-    </main>
+    </AdminShell>
   );
 }

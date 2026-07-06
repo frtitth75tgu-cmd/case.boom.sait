@@ -179,3 +179,265 @@ linear-gradient(135deg,rgba(255,77,109,.42),rgba(8,11,18,.98) 62%,rgba(98,230,25
   .opening-top,.inv-toolbar{grid-template-columns:1fr;display:grid}
   .inventory-stat{grid-template-columns:1fr}
 }
+
+
+/* CaseBoom v25 Candy UI */
+.candy-shell {
+  display: grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap: 18px;
+}
+.candy-panel {
+  border-radius: 28px;
+  border: 1px solid rgba(168,85,247,.22);
+  background:
+    radial-gradient(circle at 80% 20%, rgba(168,85,247,.16), transparent 36%),
+    linear-gradient(180deg, rgba(18,24,38,.96), rgba(8,11,18,.98));
+  padding: 22px;
+}
+.candy-title {
+  margin: 0;
+  font-size: 34px;
+  font-weight: 1000;
+}
+.candy-muted {
+  color: rgba(255,255,255,.58);
+}
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+.kpi-card {
+  border-radius: 20px;
+  padding: 16px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.045);
+}
+.kpi-card b {
+  display: block;
+  color: #a855f7;
+  font-size: 28px;
+}
+.kpi-card span {
+  color: rgba(255,255,255,.48);
+  font-size: 12px;
+}
+.feed-list {
+  display: grid;
+  gap: 10px;
+}
+.feed-row {
+  display: grid;
+  grid-template-columns: 42px 1fr auto;
+  gap: 12px;
+  align-items: center;
+  padding: 12px;
+  border-radius: 16px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.06);
+}
+.page-hero {
+  border-radius: 32px;
+  border: 1px solid rgba(168,85,247,.22);
+  background:
+    radial-gradient(circle at 70% 25%, rgba(168,85,247,.24), transparent 30%),
+    radial-gradient(circle at 20% 65%, rgba(91,140,255,.12), transparent 36%),
+    linear-gradient(135deg, rgba(12,16,30,.98), rgba(4,6,12,.99));
+  padding: 32px;
+}
+.page-hero h1 {
+  margin: 0;
+  font-size: clamp(42px, 6vw, 78px);
+  line-height: .92;
+  letter-spacing: -3px;
+  font-weight: 1000;
+}
+.admin-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 18px;
+}
+.admin-menu {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+}
+.admin-menu a {
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  border-radius: 14px;
+  background: rgba(255,255,255,.045);
+  border: 1px solid rgba(255,255,255,.07);
+  color: rgba(255,255,255,.75);
+  font-weight: 850;
+}
+.admin-menu a:hover {
+  color: #fff;
+  border-color: rgba(168,85,247,.35);
+}
+.form-stack {
+  display: grid;
+  gap: 12px;
+}
+.form-two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.badge {
+  display: inline-flex;
+  min-height: 26px;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0 9px;
+  background: rgba(168,85,247,.12);
+  border: 1px solid rgba(168,85,247,.22);
+  color: #c084fc;
+  font-size: 11px;
+  font-weight: 1000;
+}
+@media(max-width:1050px){
+  .candy-shell,.admin-layout,.form-two{grid-template-columns:1fr}
+  .kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:720px){
+  .kpi-grid{grid-template-columns:1fr}
+}
+
+
+/* CaseBoom v26 Upgrade + Sell */
+.upgrade-pro {
+  border-radius: 30px;
+  border: 1px solid rgba(168,85,247,.24);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(168,85,247,.18), transparent 36%),
+    linear-gradient(180deg, rgba(18,24,38,.98), rgba(8,11,18,.99));
+  padding: 24px;
+}
+.upgrade-pro-grid {
+  display: grid;
+  grid-template-columns: 1fr 360px 1fr;
+  gap: 18px;
+  align-items: center;
+}
+.upgrade-slot {
+  border-radius: 24px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.04);
+  padding: 14px;
+}
+.upgrade-center {
+  text-align: center;
+}
+.spin-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: 999px;
+  background: rgba(168,85,247,.14);
+  border: 1px solid rgba(168,85,247,.34);
+  color: #d8b4fe;
+  font-weight: 1000;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.upgrade-wheel {
+  width: 270px;
+  height: 270px;
+  margin: 0 auto;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: conic-gradient(from 230deg, #62ff9b 0 var(--deg), rgba(255,255,255,.08) var(--deg) 360deg);
+  border: 1px solid rgba(255,255,255,.14);
+  box-shadow: 0 0 110px rgba(168,85,247,.18);
+  position: relative;
+}
+.upgrade-wheel:after {
+  content: "";
+  position: absolute;
+  inset: 24px;
+  border-radius: inherit;
+  background: #080b13;
+  border: 1px solid rgba(255,255,255,.10);
+}
+.upgrade-wheel-content {
+  position: relative;
+  z-index: 2;
+}
+.upgrade-wheel strong {
+  display: block;
+  color: #ffd45a;
+  font-size: 50px;
+  line-height: 1;
+}
+.upgrade-wheel span {
+  color: rgba(255,255,255,.58);
+  font-size: 13px;
+}
+.chance-row {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 14px;
+}
+.chance-btn {
+  min-height: 40px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.05);
+  color: #fff;
+  font-weight: 1000;
+  cursor: pointer;
+}
+.chance-btn.active {
+  border-color: rgba(255,212,90,.5);
+  background: rgba(255,212,90,.12);
+  color: #ffd45a;
+}
+.upgrade-result {
+  margin-top: 18px;
+  border-radius: 22px;
+  border: 1px solid rgba(255,212,90,.22);
+  background: rgba(255,212,90,.07);
+  padding: 16px;
+  text-align: center;
+}
+.sell-action {
+  width: 100%;
+  min-height: 38px;
+  border-radius: 12px;
+  border: 1px solid rgba(98,255,155,.24);
+  background: rgba(98,255,155,.10);
+  color: #62ff9b;
+  font-weight: 1000;
+  cursor: pointer;
+}
+.sell-action:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+.balance-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: rgba(98,255,155,.10);
+  border: 1px solid rgba(98,255,155,.22);
+  color: #62ff9b;
+  font-weight: 1000;
+}
+@media(max-width:1100px){
+  .upgrade-pro-grid { grid-template-columns: 1fr; }
+  .upgrade-wheel { width: 220px; height: 220px; }
+}
+@media(max-width:720px){
+  .chance-row { grid-template-columns: 1fr; }
+}

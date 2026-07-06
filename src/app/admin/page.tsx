@@ -1,2 +1,33 @@
 import Link from "next/link";
-export default function Admin(){const tiles=[["📦","Кейсы"],["🎯","Шансы"],["🔫","Скины"],["💎","Пополнения"],["🎟️","Промокоды"],["👤","Пользователи"],["📊","Статистика"],["🛒","Market URL"]];return <main className="page"><section className="panel" style={{padding:28}}><h1 style={{fontSize:46,margin:0}}>Админка</h1><p style={{color:"var(--muted)"}}>Компактная админ-панель. Следом подключим сохранение в БД.</p></section><section className="section grid">{tiles.map(([i,t])=><Link href="/admin" className="mode-card" style={{"--glow":"rgba(255,212,90,.22)"} as any} key={t}><div className="icon">{i}</div><h3>{t}</h3><p>Открыть раздел</p></Link>)}</section></main>}
+import { AdminShell } from "@/components/AdminShell";
+import { CandyStats } from "@/components/CandyStats";
+
+export default function Admin() {
+  const tiles = [
+    ["📦", "Кейсы", "/admin/cases"],
+    ["🎯", "Шансы", "/admin/odds"],
+    ["👤", "Пользователи", "/admin/users"],
+    ["💎", "Пополнения", "/admin/deposits"],
+    ["🎟️", "Промокоды", "/admin/promocodes"],
+    ["🎁", "Бонусы", "/admin/bonuses"],
+    ["🛒", "Market", "/admin/market"],
+    ["📜", "Логи", "/admin/logs"],
+  ];
+
+  return (
+    <AdminShell title="Админка">
+      <div className="form-stack">
+        <CandyStats />
+        <div className="grid">
+          {tiles.map(([icon, title, href]) => (
+            <Link href={href} className="mode-card" style={{ ["--glow" as any]: "rgba(168,85,247,.22)" }} key={title}>
+              <div className="icon">{icon}</div>
+              <h3>{title}</h3>
+              <p>Открыть раздел</p>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </AdminShell>
+  );
+}

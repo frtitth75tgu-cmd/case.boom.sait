@@ -2,6 +2,8 @@ import Link from "next/link";
 import { cases, skins, boom } from "@/data/catalog";
 import { CaseCard, Section, SkinCard } from "@/components/Visuals";
 import { UpgradeSelector } from "@/components/UpgradeSelector";
+import { CandyStats } from "@/components/CandyStats";
+import { LiveDropFeed } from "@/components/LiveDropFeed";
 import { BoomCorePanel } from "@/components/BoomCore";
 
 export default function Home(){
@@ -14,6 +16,8 @@ export default function Home(){
     <div className="hero-actions"><Link href="/cases" className="btn">Открыть кейсы</Link><Link href="/upgrade" className="btn secondary">Апгрейд</Link><Link href="/battles" className="btn secondary">Баттлы</Link></div>
     <div className="metrics"><div className="metric"><b>100+</b><span>кейсов в концепции</span></div><div className="metric"><b>40+</b><span>топовых скинов</span></div><div className="metric"><b>1–95%</b><span>шанс апгрейда</span></div><div className="metric"><b>URL</b><span>market provider</span></div></div>
    </section>
+   <Section title="Статистика проекта"><CandyStats /></Section>
+   <section className="section candy-shell"><div className="candy-panel"><h2 className="candy-title">Live Drops</h2><p className="candy-muted">Последние крупные выпадения внутри CaseBoom.</p><LiveDropFeed /></div><div className="candy-panel"><h2 className="candy-title">Boom Core Status</h2><p className="candy-muted">Ядро заряжено. Бонусы, кейсы и апгрейды работают в едином фиолетово-неоновом стиле.</p><div className="notice">Следующий этап: подключение реальной истории открытий и инвентаря через базу.</div></div></section>
    <Section title="Игровые режимы"><div className="grid">{[["📦","Кейсы","Открытие с рулеткой","/cases","#ffd45a"],["⚡","Апгрейд","Выбор процента","/upgrade","#8b5cf6"],["⚔️","Баттлы","Комнаты и сражения","/battles","#ff4d6d"],["💎","Пополнение","Заявки скинами","/deposit-skins","#62e6ff"]].map(([i,t,d,h,c])=><Link key={t} href={h} className="mode-card" style={{"--glow":c+"44"} as any}><div className="icon">{i}</div><h3>{t}</h3><p>{d}</p></Link>)}</div></Section>
    <Section title="Boom Core"><BoomCorePanel/></Section>\n   <Section title="Апгрейд с шансом"><UpgradeSelector/></Section>
    <Section title="🔥 Популярные кейсы" href="/cases"><div className="strip">{popular.map(c=><CaseCard key={c.slug} item={c}/>)}</div></Section>

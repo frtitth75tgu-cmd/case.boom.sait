@@ -1,14 +1,17 @@
-export default function PromoCodePage() {
+import Link from "next/link";
+import { PageHero } from "@/components/PageHero";
+
+export default function Page() {
   return (
     <main className="page">
-      <section className="panel" style={{ padding: 28, maxWidth: 720, margin: "0 auto" }}>
-        <p style={{ color: "#ffd45a", fontWeight: 900 }}>Promo Code</p>
-        <h1 style={{ fontSize: 44, margin: "6px 0 0", fontWeight: 1000 }}>Активация промокода</h1>
-        <p style={{ color: "rgba(255,255,255,.58)" }}>Введи промокод, чтобы получить бонусы CaseBoom.</p>
-        <form action="/api/promocode/activate" method="post" style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: 10, marginTop: 18 }}>
-          <input className="input" name="code" placeholder="CASEBOOM2026" required />
-          <button className="btn">Активировать</button>
-        </form>
+      <PageHero label="CaseBoom" title="Промокод" text="Активация бонусных кодов CaseBoom." />
+      <section className="section candy-panel">
+        <h2 className="candy-title">Промокод</h2>
+        <p className="candy-muted">Активация бонусных кодов CaseBoom.</p>
+        <div className="actions">
+          <Link href="/" className="btn">На главную</Link>
+          <Link href="/support" className="btn secondary">Поддержка</Link>
+        </div>
       </section>
     </main>
   );

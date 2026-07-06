@@ -1,34 +1,18 @@
-import { config } from "@/lib/config";
+import Link from "next/link";
+import { PageHero } from "@/components/PageHero";
 
-export default function ReplacementRulesPage() {
+export default function Page() {
   return (
-    <main className="mx-auto max-w-4xl px-4 py-10">
-      <article className="card p-8">
-        <p className="text-accent">Skin Delivery</p>
-        <h1 className="mt-2 text-4xl font-black">Правило замены предмета</h1>
-        <p className="mt-4 text-white/65">
-          Если выигранный предмет временно отсутствует на подключённом маркете, пользователь может выбрать доступный аналог меньшей стоимости. Разница возвращается на внутренний баланс в {config.boomCoinName}.
-        </p>
-
-        <div className="mt-6 grid gap-4">
-          <div className="rounded-2xl bg-white/[.04] p-5">
-            <strong>1. Проверка наличия</strong>
-            <p className="mt-2 text-white/55">Система проверяет маркет и актуальную цену предмета.</p>
-          </div>
-          <div className="rounded-2xl bg-white/[.04] p-5">
-            <strong>2. Выбор замены</strong>
-            <p className="mt-2 text-white/55">Если предмет недоступен, показываются аналоги в пределах заданного админом диапазона.</p>
-          </div>
-          <div className="rounded-2xl bg-white/[.04] p-5">
-            <strong>3. Возврат разницы</strong>
-            <p className="mt-2 text-white/55">Разница до {config.replacementMaxDelta} {config.boomCoinShort} или до {config.replacementMaxPercent}% возвращается на внутренний баланс.</p>
-          </div>
+    <main className="page">
+      <PageHero label="CaseBoom" title="Замена предметов" text="Если предмет недоступен на маркете, подбирается аналог и разница возвращается в Boom Coins." />
+      <section className="section candy-panel">
+        <h2 className="candy-title">Замена предметов</h2>
+        <p className="candy-muted">Если предмет недоступен на маркете, подбирается аналог и разница возвращается в Boom Coins.</p>
+        <div className="actions">
+          <Link href="/" className="btn">На главную</Link>
+          <Link href="/support" className="btn secondary">Поддержка</Link>
         </div>
-
-        <p className="mt-6 text-sm text-white/45">
-          Внутренний баланс нельзя вывести деньгами. Он используется только для функций платформы.
-        </p>
-      </article>
+      </section>
     </main>
   );
 }

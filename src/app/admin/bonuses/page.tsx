@@ -2,17 +2,17 @@ import { AdminShell } from "@/components/AdminShell";
 
 export default function Page() {
   return (
-    <AdminShell title="Market API">
+    <AdminShell title="Бонусы">
       <section className="candy-panel">
-        <h2 className="candy-title">Market API</h2>
-        <p className="candy-muted">Настройка URL поставщика цен и закупки.</p>
+        <h2 className="candy-title">Бонусы</h2>
+        <p className="candy-muted">Daily, уровни, депозитные награды.</p>
 
         <form className="form-stack" style={{ marginTop: 18 }}>
           <div className="form-two">
-            <input className="input" placeholder="Provider URL" />
-            <input className="input" placeholder="API Key" />
+            <input className="input" placeholder="Название" />
+            <input className="input" placeholder="Награда" />
           </div>
-          <input className="input" placeholder="Комиссия" />
+          <input className="input" placeholder="Кулдаун" />
           <button className="btn" type="button">Сохранить</button>
         </form>
 

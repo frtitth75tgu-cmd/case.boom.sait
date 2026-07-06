@@ -1,13 +1,17 @@
 import Link from "next/link";
+import { PageHero } from "@/components/PageHero";
 
 export default function Page() {
   return (
     <main className="page">
-      <section className="panel" style={{ padding: 28 }}>
-        <span className="route-status">Раздел работает</span>
-        <h1 style={{ fontSize: 46, margin: "12px 0 0", fontWeight: 1000 }}>Проверяемая честность</h1>
-        <p style={{ color: "rgba(255,255,255,.58)" }}>Здесь будет система проверки результата открытия.</p>
-        <Link href="/" className="btn" style={{ marginTop: 18 }}>На главную</Link>
+      <PageHero label="CaseBoom" title="Проверка честности" text="Проверка результатов открытий и апгрейдов." />
+      <section className="section candy-panel">
+        <h2 className="candy-title">Проверка честности</h2>
+        <p className="candy-muted">Проверка результатов открытий и апгрейдов.</p>
+        <div className="actions">
+          <Link href="/" className="btn">На главную</Link>
+          <Link href="/support" className="btn secondary">Поддержка</Link>
+        </div>
       </section>
     </main>
   );

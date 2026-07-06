@@ -1,14 +1,25 @@
-import Link from "next/link";
+import { AdminShell } from "@/components/AdminShell";
 
 export default function Page() {
   return (
-    <main className="page">
-      <section className="panel" style={{ padding: 28 }}>
-        <span className="route-status">Раздел работает</span>
-        <h1 style={{ fontSize: 46, margin: "12px 0 0", fontWeight: 1000 }}>Шансы</h1>
-        <p style={{ color: "rgba(255,255,255,.58)" }}>Здесь будет общий редактор шансов.</p>
-        <Link href="/" className="btn" style={{ marginTop: 18 }}>На главную</Link>
+    <AdminShell title="Шансы">
+      <section className="candy-panel">
+        <h2 className="candy-title">Шансы</h2>
+        <p className="candy-muted">Настройка выпадений и процентов.</p>
+
+        <form className="form-stack" style={{ marginTop: 18 }}>
+          <div className="form-two">
+            <input className="input" placeholder="Предмет" />
+            <input className="input" placeholder="Шанс %" />
+          </div>
+          <input className="input" placeholder="Цена" />
+          <button className="btn" type="button">Сохранить</button>
+        </form>
+
+        <div className="notice">
+          Раздел уже готов визуально. Следующий этап — подключить сохранение в Prisma.
+        </div>
       </section>
-    </main>
+    </AdminShell>
   );
 }

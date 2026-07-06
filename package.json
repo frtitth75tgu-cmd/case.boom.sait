@@ -1,6 +1,6 @@
 {
-  "name": "caseboom-ultimate-v24",
-  "version": "24.0.0",
+  "name": "caseboom-ultimate-v26",
+  "version": "26.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",

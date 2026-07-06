@@ -1,5 +1,5 @@
 import { skins, boom } from "@/data/catalog";
-import { SkinCard } from "@/components/Visuals";
+import { InventorySellClient } from "@/components/InventorySellClient";
 
 export default function Profile() {
   const inv = skins.slice(0, 8);
@@ -10,12 +10,12 @@ export default function Profile() {
       <section className="panel" style={{ padding: 28 }}>
         <h1 style={{ fontSize: 46, margin: 0 }}>Профиль</h1>
         <p style={{ color: "var(--muted)" }}>
-          Баланс: 15 450 {boom.short} · Уровень 17 · Steam подключен
+          Инвентарь, продажа предметов, заявки и апгрейд.
         </p>
 
         <div className="inventory-stat">
           <div className="metric"><b>{inv.length}</b><span>предметов</span></div>
-          <div className="metric"><b>{total.toLocaleString("ru-RU")}</b><span>стоимость инвентаря</span></div>
+          <div className="metric"><b>{total.toLocaleString("ru-RU")}</b><span>стоимость инвентаря {boom.short}</span></div>
           <div className="metric"><b>42</b><span>открытий</span></div>
           <div className="metric"><b>18%</b><span>удача апгрейда</span></div>
         </div>
@@ -33,16 +33,8 @@ export default function Profile() {
           <button className="btn secondary">Выдать</button>
         </div>
 
-        <div className="grid" style={{ marginTop: 14 }}>
-          {inv.map((s) => (
-            <div key={s.name}>
-              <SkinCard item={s} />
-              <div className="item-actions">
-                <a href="/upgrade">Апгрейд</a>
-                <a href="/deposit-skins">Заявка</a>
-              </div>
-            </div>
-          ))}
+        <div style={{ marginTop: 14 }}>
+          <InventorySellClient items={inv} />
         </div>
       </section>
     </main>
