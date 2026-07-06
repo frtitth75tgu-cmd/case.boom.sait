@@ -1,119 +1,26 @@
 import Link from "next/link";
-import { config } from "@/lib/config";
-import { cases, skins } from "@/data/cs2Catalog";
-import { CaseCard, CaseWide, SkinCard } from "@/components/Cs2Visuals";
-import { UpgradeChanceSelector } from "@/components/UpgradeChanceSelector";
+import { cases, skins, boom } from "@/data/catalog";
+import { CaseCard, Section, SkinCard } from "@/components/Visuals";
+import { UpgradeSelector } from "@/components/UpgradeSelector";
+import { BoomCorePanel } from "@/components/BoomCore";
 
-export default function HomePage() {
-  const vip = cases.filter((c) => c.category === "vip");
-  const popular = cases.filter((c) => ["popular", "premium", "knife", "gloves"].includes(c.category)).slice(0, 8);
-  const bonus = cases.filter((c) => c.category === "free" || c.category === "deposit");
-  const topSkins = skins.slice(0, 12);
-
-  return (
-    <main>
-      <section className="market-strip">
-        {topSkins.map((item) => (
-          <Link href="/skins" key={item.name} className="market-mini" style={{ ["--mini" as any]: item.rarity === "Exotic" ? "#ffd45a" : item.rarity === "Covert" ? "#ff4d6d" : "#8b5cf6" }}>
-            <div className="gun" />
-            <strong>{item.name}</strong>
-            <span>{item.price.toLocaleString("ru-RU")} {config.boomCoinShort}</span>
-          </Link>
-        ))}
-      </section>
-
-      <div className="page">
-        <section className="ultimate-hero">
-          <h1 className="ultimate-title">CaseBoom<br /><span>Ultimate</span></h1>
-          <p className="ultimate-subtitle">
-            Мощная версия проекта: кейсы, скины, реальные ориентиры цен, апгрейд с выбором процента, баттлы, бонусы, промокоды и админка.
-          </p>
-          <div className="ultimate-actions">
-            <Link href="/cases" className="btn">Открыть кейсы</Link>
-            <Link href="/upgrade" className="btn secondary">Апгрейд</Link>
-            <Link href="/battles" className="btn secondary">Баттлы</Link>
-            <Link href="/skins" className="btn secondary">Скины</Link>
-          </div>
-          <div className="ultimate-metrics">
-            <div className="metric-card"><strong>100+</strong><span>кейсов в концепции</span></div>
-            <div className="metric-card"><strong>40+</strong><span>топовых скинов</span></div>
-            <div className="metric-card"><strong>1–95%</strong><span>шанс апгрейда</span></div>
-            <div className="metric-card"><strong>BC</strong><span>Boom Coins</span></div>
-          </div>
-        </section>
-
-        <section className="case-section">
-          <div className="section-head"><h2>Игровые режимы</h2></div>
-          <div className="mode-grid">
-            {[
-              ["📦", "Кейсы", "Открытие кейсов с рулеткой и шансами", "/cases", "#ffd45a"],
-              ["⚡", "Апгрейд", "Выбор процента: 10%, 25%, 50%, 75%, 90%", "/upgrade", "#8b5cf6"],
-              ["⚔️", "Баттлы", "Комнаты 1×1, 2×2 и приватные бои", "/battles", "#ff4d6d"],
-              ["💎", "Пополнение", "Пополнение скинами через заявки", "/deposit-skins", "#62e6ff"],
-            ].map(([icon, title, text, href, color]) => (
-              <Link href={href} className="mode-card" style={{ ["--mode" as any]: color + "44" }} key={title}>
-                <div className="mode-icon">{icon}</div>
-                <h3>{title}</h3>
-                <p>{text}</p>
-              </Link>
-            ))}
-          </div>
-        </section>
-
-        <section className="case-section">
-          <UpgradeChanceSelector />
-        </section>
-
-        <section className="case-section">
-          <div className="section-head"><h2>🔥 Популярные кейсы</h2><Link href="/cases" style={{ color: "#ffd45a", fontWeight: 900 }}>Все →</Link></div>
-          <div className="case-strip">{popular.map((item) => <CaseCard key={item.slug} item={item} />)}</div>
-        </section>
-
-        <section className="final-row">
-          <div className="final-block">
-            <div className="panel-title">Топовые скины</div>
-            <div className="skin-grid" style={{ gridTemplateColumns: "repeat(2,1fr)", marginTop: 12 }}>
-              {topSkins.slice(0, 2).map((item) => <SkinCard key={item.name} item={item} />)}
-            </div>
-            <Link href="/skins" className="btn" style={{ width: "100%", marginTop: 16 }}>Все скины</Link>
-          </div>
-
-          <div className="final-block">
-            <div className="panel-title">VIP-кейсы</div>
-            <div className="ultimate-table">
-              {vip.map((c) => (
-                <Link href={`/cases/${c.slug}`} className="ultimate-row" key={c.slug}>
-                  <div className="avatar">👑</div>
-                  <div><strong>{c.title}</strong><div style={{ color: "rgba(255,255,255,.45)", fontSize: 12 }}>{c.tag}</div></div>
-                  <strong style={{ color: "#ffd45a" }}>{c.price.toLocaleString("ru-RU")}</strong>
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          <div className="final-block">
-            <div className="panel-title">Бонусные кейсы</div>
-            <div className="ultimate-table">
-              {bonus.map((c) => (
-                <Link href={`/cases/${c.slug}`} className="ultimate-row" key={c.slug}>
-                  <div className="avatar">🎁</div>
-                  <div><strong>{c.title}</strong><div style={{ color: "rgba(255,255,255,.45)", fontSize: 12 }}>{c.category}</div></div>
-                  <strong style={{ color: "#62ff9b" }}>FREE</strong>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="case-section">
-          <div className="section-head"><h2>👑 Большие кейсы</h2></div>
-          <div className="case-row-grid">{vip.map((item) => <CaseWide key={item.slug} item={item} />)}</div>
-        </section>
-
-        <div className="legal-note">
-          Цены являются рыночным ориентиром. Для реального запуска подключается market API и автоматическое обновление.
-        </div>
-      </div>
-    </main>
-  );
+export default function Home(){
+ const popular=cases.filter(c=>["popular","premium","knife","gloves"].includes(c.category));
+ const vip=cases.filter(c=>c.category==="vip"); const bonus=cases.filter(c=>c.category==="free"||c.category==="deposit"); const top=skins.slice(0,12);
+ return <main>
+  <section className="market-strip">{top.map(s=><Link className="market-item" href="/cases" key={s.name} style={{"--mini":s.rarity==="Exotic"?"#ffd45a":s.rarity==="Covert"?"#ff4d6d":"#8b5cf6"} as any}><div className="market-gun"/><strong>{s.name}</strong><span>{s.price.toLocaleString("ru-RU")} {boom.short}</span></Link>)}</section>
+  <div className="page">
+   <section className="hero"><div className="hero-core"><div className="boom-core-big"><span className="core-ring core-ring-a" /><span className="core-ring core-ring-b" /><span className="core-ring core-ring-c" /><span className="core-pulse" /><b>CB</b></div></div><h1>CaseBoom<br/><span>Ultimate</span></h1><p>Цельная версия без патчей: быстрый Steam-вход, кейсы, скины, реальные ориентиры цен, апгрейд с выбором процента, баттлы, бонусы и заготовка под market URL.</p>
+    <div className="hero-actions"><Link href="/cases" className="btn">Открыть кейсы</Link><Link href="/upgrade" className="btn secondary">Апгрейд</Link><Link href="/battles" className="btn secondary">Баттлы</Link></div>
+    <div className="metrics"><div className="metric"><b>100+</b><span>кейсов в концепции</span></div><div className="metric"><b>40+</b><span>топовых скинов</span></div><div className="metric"><b>1–95%</b><span>шанс апгрейда</span></div><div className="metric"><b>URL</b><span>market provider</span></div></div>
+   </section>
+   <Section title="Игровые режимы"><div className="grid">{[["📦","Кейсы","Открытие с рулеткой","/cases","#ffd45a"],["⚡","Апгрейд","Выбор процента","/upgrade","#8b5cf6"],["⚔️","Баттлы","Комнаты и сражения","/battles","#ff4d6d"],["💎","Пополнение","Заявки скинами","/deposit-skins","#62e6ff"]].map(([i,t,d,h,c])=><Link key={t} href={h} className="mode-card" style={{"--glow":c+"44"} as any}><div className="icon">{i}</div><h3>{t}</h3><p>{d}</p></Link>)}</div></Section>
+   <Section title="Boom Core"><BoomCorePanel/></Section>\n   <Section title="Апгрейд с шансом"><UpgradeSelector/></Section>
+   <Section title="🔥 Популярные кейсы" href="/cases"><div className="strip">{popular.map(c=><CaseCard key={c.slug} item={c}/>)}</div></Section>
+   <section className="section grid3"><div className="panel" style={{padding:18}}><div className="section-head"><h2>Топ-дропы</h2></div><div className="grid2">{top.slice(0,2).map(s=><SkinCard key={s.name} item={s}/>)}</div><Link href="/cases" className="btn" style={{width:"100%",marginTop:16}}>К кейсам</Link></div>
+   <div className="panel" style={{padding:18}}><div className="section-head"><h2>VIP-кейсы</h2></div><div className="table">{vip.map(c=><Link href={`/cases/${c.slug}`} className="row" key={c.slug}><div className="avatar">👑</div><div><b>{c.title}</b><br/><span style={{color:"var(--muted)"}}>{c.tag}</span></div><b style={{color:"var(--gold)"}}>{c.price.toLocaleString("ru-RU")}</b></Link>)}</div></div>
+   <div className="panel" style={{padding:18}}><div className="section-head"><h2>Бонусные</h2></div><div className="table">{bonus.map(c=><Link href={`/cases/${c.slug}`} className="row" key={c.slug}><div className="avatar">🎁</div><div><b>{c.title}</b><br/><span style={{color:"var(--muted)"}}>{c.category}</span></div><b style={{color:"var(--green)"}}>FREE</b></Link>)}</div></div></section>
+   <div className="notice">Цены являются ориентиром в Boom Coins. Для реального запуска подключается market API через переменную MARKET_API_URL.</div>
+  </div>
+ </main>
 }

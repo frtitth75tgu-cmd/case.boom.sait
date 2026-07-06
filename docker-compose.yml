@@ -1,16 +1,11 @@
 services:
-  postgres:
-    image: postgres:16
-    container_name: caseboom_postgres
-    restart: unless-stopped
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: caseboom
-    ports:
-      - "5432:5432"
+  caseboom:
+    image: node:20-alpine
+    working_dir: /app
     volumes:
-      - caseboom_pg:/var/lib/postgresql/data
-
-volumes:
-  caseboom_pg:
+      - .:/app
+    command: sh -c "npm install && npm run dev"
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
